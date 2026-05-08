@@ -1,0 +1,64 @@
+{
+  "items": [
+    {
+      "id": "bm-1",
+      "title": "GitHub",
+      "url": "https://github.com",
+      "description": "全球最大的代码托管平台，开源社区的核心",
+      "category": "开发工具",
+      "icon": "https://github.com/favicon.ico",
+      "tags": ["代码托管", "开源", "Git"],
+      "date": "2026-05-01"
+    },
+    {
+      "id": "bm-2",
+      "title": "Stack Overflow",
+      "url": "https://stackoverflow.com",
+      "description": "程序员问答社区，解决技术问题的首选",
+      "category": "开发工具",
+      "icon": "https://stackoverflow.com/favicon.ico",
+      "tags": ["问答", "编程", "社区"],
+      "date": "2026-05-02"
+    },
+    {
+      "id": "bm-3",
+      "title": "Dribbble",
+      "url": "https://dribbble.com",
+      "description": "设计师作品展示平台，UI/UX灵感来源",
+      "category": "设计资源",
+      "icon": "https://dribbble.com/favicon.ico",
+      "tags": ["设计", "UI", "灵感"],
+      "date": "2026-05-03"
+    },
+    {
+      "id": "bm-4",
+      "title": "Figma",
+      "url": "https://figma.com",
+      "description": "在线协作设计工具，界面设计行业标准",
+      "category": "设计资源",
+      "icon": "https://figma.com/favicon.ico",
+      "tags": ["设计工具", "协作", "UI设计"],
+      "date": "2026-05-04"
+    },
+    {
+      "id": "bm-5",
+      "title": "MDN Web Docs",
+      "url": "https://developer.mozilla.org",
+      "description": "Mozilla开发的Web技术文档，前端开发者必备",
+      "category": "技术文档",
+      "icon": "https://developer.mozilla.org/favicon.ico",
+      "tags": ["文档", "前端", "Web标准"],
+      "date": "2026-05-05"
+    },
+    {
+      "id": "bm-6",
+      "title": "V2EX",
+      "url": "https://v2ex.com",
+      "description": "创意工作者社区，讨论技术、生活和创意",
+      "category": "社区论坛",
+      "icon": "https://v2ex.com/favicon.ico",
+      "tags": ["社区", "讨论", "创意"],
+      "date": "2026-05-06"
+    }
+  ]
+}

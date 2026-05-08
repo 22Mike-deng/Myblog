@@ -1,0 +1,59 @@
+{
+  "items": [
+    {
+      "id": "aigc-1",
+      "title": "赛博朋克城市夜景",
+      "image": "images/aigc/cyberpunk-city.jpg",
+      "category": "概念艺术",
+      "prompt": "Cyberpunk city street at night, neon lights, rain, reflections on wet pavement, futuristic buildings, high detail, cinematic lighting, 8k",
+      "aspectRatio": "16:9",
+      "date": "2026-05-01",
+      "tags": ["赛博朋克", "城市", "夜景","GPTimage2"],
+      "summary": "赛博朋克风格的城市夜景概念图"
+    },
+    {
+      "id": "aigc-2",
+      "title": "水墨山水画",
+      "image": "images/aigc/ink-landscape.jpg",
+      "category": "国风艺术",
+      "prompt": "Traditional Chinese ink wash painting, misty mountains, pine trees, waterfall, flying cranes, monochrome, elegant brush strokes, zen atmosphere",
+      "aspectRatio": "3:4",
+      "date": "2026-05-03",
+      "tags": ["国风", "山水", "水墨","GPTimage2"],
+      "summary": "传统水墨风格山水画"
+    },
+    {
+      "id": "aigc-3",
+      "title": "科幻机甲少女",
+      "image": "images/aigc/mecha-girl.jpg",
+      "category": "角色设计",
+      "prompt": "Anime style mecha girl, white and blue armor, glowing blue eyes, floating in zero gravity, sci-fi background, detailed mechanical parts, vibrant colors",
+      "aspectRatio": "9:16",
+      "date": "2026-05-05",
+      "tags": ["科幻", "机甲", "角色","GPTimage2"],
+      "summary": "科幻风格的机甲少女角色设计"
+    },
+    {
+      "id": "aigc-4",
+      "title": "美食摄影·提拉米苏",
+      "image": "images/aigc/tiramisu.jpg",
+      "category": "美食摄影",
+      "prompt": "Tiramisu dessert on wooden table, top-down view, natural lighting, coffee powder sprinkles, cream layers, food photography, shallow depth of field, appetizing",
+      "aspectRatio": "1:1",
+      "date": "2026-05-08",
+      "tags": ["美食", "摄影", "甜品","GPTimage2"],
+      "summary": "提拉米苏美食摄影"
+    },
+    {
+      "id": "aigc-5",
+      "title": "次世代游戏CG",
+      "image": "images/aigc/001.jpg",
+      "category": "角色设计",
+      "prompt": "8K超清，极致细节，超高分辨率，次世代游戏CG原画，电影级渲染，高清建模级画质，日系二次元唯美×硬核科幻机甲风格，反差美学，清冷破碎感，圣洁疏离氛围，中近景构图，绝美东方二次元女性，御姐身材，随机的妆容，随机的饰品，随机的动作，侧光，发丝轻飘，凌乱，随机角度拍摄，总体有很多的不确定性，但又好看。搭配腰间悬浮墨玉环佩、凌空暗黑珠链环绕身侧，发丝与机神装甲表面萦绕墨蓝星屑，全身覆盖墨蓝黑三色暗黑仙神级机神机甲配色装甲，贴合身形的神性流线型装甲，肩背延伸神格冥蓝机械翼、寒玄构架结构，带有液压杆、精密管线、墨蓝晶炮管等神性硬核机械细节，关节处露出仙塑暗黑机械内骨，装甲表面带有星纹颗粒磨砂高光，圆形墨蓝琉璃传感晶簇点缀其中，装甲边缘利落流畅，带有冥雾流光与晶面冷反光，冥海仙域场景，漫天流转的冥絮星尘，前景带有寒墨玉枝浮空摆件，背景是墨蓝暗琉璃天际与虚化冥殿建筑轮廓，空域漫反射柔光，侧上方冥域自然光，柔和漫射光影，装甲边缘磨砂高光清晰，阴影细腻层次分明，机神机甲清冷神性质感，散仙垂鬟髻发丝飘逸灵动感，温润细腻质感，整体冥冷冷调为主，墨蓝黑配色点缀，画面干净肃穆，高级氛围感拉满。",
+      "aspectRatio": "9:16",
+      "date": "2026-05-08",
+      "tags": ["GPTimage2", "装甲", "科幻机甲", "二次元"],
+      "summary": "硬核科幻机甲"
+    }
+  ]
+}
