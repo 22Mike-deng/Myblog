@@ -19,28 +19,42 @@ async function init() {
 
 async function loadArticles() {
   try {
+    // 获取当前页面文件名（兼容各种路径格式，包括服务器自动去掉.html后缀的情况）
     const pathname = window.location.pathname;
-    const isAigcPage = pathname.includes('aigc.html');
-    const isBookmarksPage = pathname.includes('bookmarks.html');
+    const pageName = pathname.split('/').pop().split('?')[0] || '';
     
-    let url = 'data/index.json';
+    // 兼容服务器自动去掉 .html 后缀的情况
+    const isAigcPage = pageName === 'aigc' || pageName === 'aigc.html' || pathname.includes('/aigc');
+    const isBookmarksPage = pageName === 'bookmarks' || pageName === 'bookmarks.html' || pathname.includes('/bookmarks');
+    
+    // 计算基础路径（处理子目录部署情况）
+    const basePath = pathname.substring(0, pathname.lastIndexOf('/') + 1);
+    
+    let url = basePath + 'data/index.json';
     let dataKey = 'articles';
     
     if (isAigcPage) {
-      url = 'data/aigc.json';
+      url = basePath + 'data/aigc.json';
       dataKey = 'items';
     } else if (isBookmarksPage) {
-      url = 'data/bookmarks.json';
+      url = basePath + 'data/bookmarks.json';
       dataKey = 'items';
     }
     
+    console.log('Loading data from:', url, 'Page:', pageName, 'isAigc:', isAigcPage, 'isBookmarks:', isBookmarksPage);
+    
     const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
     const data = await response.json();
     const items = data[dataKey] || [];
     
     state.articles = items.sort((a, b) => new Date(b.date) - new Date(a.date));
+    console.log('Loaded', state.articles.length, 'items from', url);
   } catch (error) {
     console.error('加载文章失败:', error);
+    state.articles = [];
   }
 }
 
