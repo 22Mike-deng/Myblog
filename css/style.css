@@ -1482,12 +1482,26 @@ body {
 @media (max-width: 600px) {
   .profile-body {
     flex-direction: column;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
   }
   
   .profile-left,
   .profile-right {
     width: 100%;
+    gap: var(--spacing-sm);
+  }
+  
+  .profile-left .info-item,
+  .profile-right .info-item {
+    text-align: left;
+    padding: var(--spacing-sm);
+    font-size: 10px;
+  }
+  
+  .profile-left .info-item::before,
+  .profile-right .info-item::before {
+    left: 8px;
+    right: auto;
   }
   
   .data-line {
@@ -1496,10 +1510,24 @@ body {
   
   .profile-content {
     padding: var(--spacing-md);
-    margin: var(--spacing-md);
+    margin: var(--spacing-sm);
+    max-width: 100%;
   }
   
   .profile-title {
+    font-size: 12px;
+  }
+  
+  .avatar-frame {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .profile-close-btn {
+    top: -10px;
+    right: -10px;
+    width: 32px;
+    height: 32px;
     font-size: 12px;
   }
 }

@@ -59,6 +59,216 @@
       "icon": "https://v2ex.com/favicon.ico",
       "tags": ["社区", "讨论", "创意"],
       "date": "2026-05-06"
-    }
-  ]
+    },
+    {
+      "id": "bm-7",
+      "title": "阿里巴巴矢量图标库",
+      "url": "https://www.iconfont.cn/",
+      "description": "阿里巴巴矢量图标库，提供丰富的图标资源",
+      "category": "设计资源",
+      "icon": "https://ts1.tc.mm.bing.net/th/id/ODF.3MmA0GvHIJ0cnsJIcGIPDQ",
+      "tags": ["图标", "矢量", "设计"],
+      "date": "2026-05-07"
+    },
+    {
+      "id": "bm-8",
+      "title": "QQ音乐",
+      "url":"https://y.qq.com/",
+      "description": "腾讯音乐平台，提供丰富的音乐资源",
+      "category": "音乐平台",
+      "icon": "https://y.qq.com/favicon.ico",
+      "tags": ["音乐", "QQ"],
+      "date": "2026-05-08"
+    },
+    {
+      "id": "bm-9",
+      "title": "酷狗音乐",
+      "url": "https://www.kugou.com/",
+      "description": "酷狗音乐平台，提供丰富的音乐资源",
+      "category": "音乐平台",
+      "icon": "https://www.kugou.com/favicon.ico",
+      "tags": ["音乐", "酷狗"],
+      "date": "2026-05-09"
+    },
+    {
+      "id": "bm-10",
+      "title": "网易云音乐",
+      "url": "https://music.163.com/",
+      "description": "网易云音乐平台，提供丰富的音乐资源",
+      "category": "音乐平台",
+      "icon": "https://music.163.com/favicon.ico",
+      "tags": ["音乐", "网易云"],
+      "date": "2026-05-9"
+    },
+    {
+      "id": "bm-11",
+      "title": "抖音",
+      "url": "https://www.douyin.com/",
+      "description": "抖音视频平台，提供丰富的视频内容",
+      "category": "视频平台",
+      "icon": "https://www.douyin.com/favicon.ico",
+      "tags": ["抖音", "视频"],
+      "date": "2026-05-9"
+    },
+    {
+      "id": "bm-12",
+      "title": "IMYAI智能助手",
+      "url": "https://super.imyaigc.com/",
+      "description": "IMYAI智能助手，提供智能助手服务,包含国内外大模型，支持免费使用。IMYAI，国内超全AI大模型平台，集AI文本、绘画、音乐、视频等AIGC创作服务于一体，终身学习者的超级生产力工具！",
+      "category": "AI平台",
+      "icon": "https://super.imyaigc.com/favicon.ico",
+      "tags": ["智能助手", "AI平台"],
+      "date": "2026-05-9"
+    },
+    {
+      "id": "bm-13",
+      "title": "Oiioii",
+      "url": "https://www.oiioii.ai/",
+      "description": "OiiOii 是全球首个专业动画创作Agent，能帮助创作者轻松实现动画梦想。OiiOii 通过内置的 7 个专业 Agent（如艺术总监、编剧、分镜师等），实现从剧本创作到动画生成的一站式服务，支持生成图片、视频、动画短片等多种形式。OiiOii 集成 Seedance 2.0 等顶尖视频生成模型和 GPTimage2 等顶尖图片生成模型，适合内容创作者和动画爱好者使用，现访问官网即可注册使用。",
+      "category": "AI创作",
+      "icon": "https://www.oiioii.ai/favicon.ico",
+      "tags": ["AI视频", "AI绘画","GPTimage2"],
+      "date": "2026-05-9"
+    },
+    {
+      "id": "bm-14",
+      "title": "Trae CN",
+      "url": "https://www.trae.cn/",
+      "description": "TRAE是字节跳动推出的 AI IDE 编程工具，是高度智能的AI开发工程师，集成AI Coding Agent，能理解需求、调动工具、独立完成各类开发任务。通过TRAE SOLO模式，TRAE能理解开发者需求，自动执行从代码编写到测试的全过程，显著提升开发效率。TRAE支持自然语言对话，开发者能用日常语言与工具互动，简化复杂任务。TRAE注重用户隐私，采用本地优先策略和最小化数据收集原则，确保数据安全。TRAE能提高生产力，让开发者能更专注于创新和解决问题，不被繁琐的编码工作所困扰。",
+      "category": "AI编程",
+      "icon": "https://ts4.tc.mm.bing.net/th/id/ODF.YIp5-bd6aV_n2t3WPPiW7w",
+      "tags": ["AI编程", "Trae"],
+      "date": "2026-05-9"
+    },
+    {
+    "id": "bm-15",
+    "title": "GitHub Copilot",
+    "url": "https://github.com/features/copilot",
+    "description": "GitHub Copilot是GitHub与OpenAI联合开发的AI编程助手，作为行业标杆工具，集成于VS Code、JetBrains等主流IDE，支持30+编程语言。它具备强大的上下文感知能力，能实时生成代码补全、函数实现、测试用例及注释，支持自然语言转代码和代码解释功能。Copilot提供个人免费版（每月2000次补全+50次聊天）和Pro版（10美元/月，无限使用），深度整合GitHub生态，适合团队协作与版本控制场景，是全球开发者使用最广泛的AI编程工具之一。",
+    "category": "AI编程",
+    "icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+    "tags": ["AI编程", "代码补全"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-16",
+    "title": "Cursor",
+    "url": "https://www.cursor.com/",
+    "description": "Cursor是基于VS Code深度重构的AI原生IDE，被视为2026年AI编程工具的行业标杆，拥有超100万用户。核心优势在于最强的上下文索引能力和Composer模式，支持Claude、GPT、Gemini等多模型切换，可实现跨文件编辑、终端命令执行和自动修bug的全流程开发。其Agent模式能理解复杂需求并自主执行开发任务，支持指哪打哪的精细化代码控制，适合需要深度代码理解和大规模重构的专业开发者。Cursor提供免费Hobby版和Pro版，是GUI类AI编程工具的首选。",
+    "category": "AI编程",
+    "icon": "https://www.cursor.com/favicon.ico",
+    "tags": ["AI编程", "AI原生IDE"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-17",
+    "title": "文心快码(Comate)",
+    "url": "https://comate.baidu.com/",
+    "description": "文心快码是百度推出的企业级全栈智能体AI编程工具，基于文心大模型，支持200+编程语言，中文理解能力领先。核心特点是Multi-Agent架构的Zulu智能体系统，能实现'需求澄清→任务拆解→自主执行'的全流程开发，具备项目级上下文理解和跨文件函数引用能力。其独创的SPEC模式确保代码可回溯、可干预，支持规范驱动开发，适合国内企业级开发场景。提供个人免费版和企业版（150元/人/月起），是中文开发者的首选AI编程助手之一。",
+    "category": "AI编程",
+    "icon": "https://comate.baidu.com/favicon.ico",
+    "tags": ["AI编程", "代码补全"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-18",
+    "title": "Claude Code",
+    "url": "https://www.anthropic.com/claude/code",
+    "description": "Claude Code是Anthropic推出的命令行AI编码代理，由Claude Opus 4.6模型驱动，拥有1M token超大上下文窗口，在SWE-bench行业基准测试中得分80.8%，是2026年推理能力最强的AI编程工具之一。它能在终端中运行，读取整个代码库，处理复杂的多文件修改、调试会话、架构重构和功能实现，通过对话式交互完成开发任务。支持自然语言指令执行，适合处理长任务和需要深度推理的开发场景，提供免费版和19美元/月的专业版。",
+    "category": "AI编程",
+    "icon": "https://www.anthropic.com/images/favicon-32x32.png",
+    "tags": ["AI编程", "代码补全"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-19",
+    "title": "Codeium",
+    "url": "https://codeium.com/",
+    "description": "Codeium是一款跨平台AI编程助手，以免费版功能强大著称，支持70+编程语言和40+编辑器，提供无限免费代码补全。核心优势在于跨编辑器兼容性和Cascade智能体模式，能实现自主多文件编辑，适合轻量任务和预算有限的开发者。Codeium Pro版（15美元/月）提供高级智能体功能和优先支持，其开源理念和广泛的编辑器支持使其成为全球开发者的热门选择，特别适合需要在不同开发环境间切换的团队。",
+    "category": "AI编程",
+    "icon": "https://codeium.com/favicon.ico",
+    "tags": ["AI编程", "免费AI编程"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-20",
+    "title": "Tabnine",
+    "url": "https://www.tabnine.com/",
+    "description": "Tabnine是一款注重隐私保护的AI编程助手，提供本地优先和云端部署两种模式，采用最小化数据收集原则，适合对数据安全有严格要求的企业和个人。它能通过本地代码感知生成相关推荐，支持连接GitHub、GitLab、Bitbucket等任何Git仓库获取全局上下文，与Copilot不同，Tabnine是供应商中立的，可在开发者现有IDE和工作流中无缝集成。其企业版提供强大的策略控制和团队学习功能，适合需要统一编码规范的开发团队，是隐私优先场景下的最佳选择之一。",
+    "category": "AI编程",
+    "icon": "https://www.tabnine.com/favicon.ico",
+    "tags": ["AI编程", "企业级AI编程"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-21",
+    "title": "Windsurf",
+    "url": "https://www.windsurf.ai/",
+    "description": "Windsurf是Codeium推出的AI原生IDE，主打'轻量高效'的开发体验，内置Cascade智能体引擎，支持自主多文件编辑和自然语言交互。它提供慷慨的免费版（无限基础补全）和15美元/月的Pro版，适合个人开发者和小型团队。Windsurf的核心优势在于简洁的界面设计和高效的代码生成能力，能自动执行从需求分析到代码测试的全流程，让开发者专注于创新而非繁琐的编码工作，是2026年新兴的AI编程工具代表之一。",
+    "category": "AI编程",
+    "icon": "https://www.windsurf.ai/favicon.ico",
+    "tags": ["AI编程", "轻量IDE", "智能体"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-22",
+    "title": "豆包",
+    "url": "https://www.doubao.com/",
+    "description": "豆包是字节跳动推出的全模态AI助手，内置Code模型专为编程场景深度优化，已接入AI编程工具TRAE。支持200+编程语言，能实现代码生成、调试、重构、测试用例编写全流程开发，生成代码注释完整、符合国内主流规范，实测可直接运行率达89%。其原生Agent架构支持百万token上下文窗口，能处理大型代码库，全模态能力可读取报错截图、接口文档生成对应代码，提供Pro、Lite、Mini、Code四种模型适配不同开发场景，是国内开发者首选的全能型AI编程助手之一。",
+    "category": "AI聊天助手",
+    "icon": "https://ts3.tc.mm.bing.net/th/id/ODF.llFymawgMlKVUuhTiuEA9g",
+    "tags": ["AI编程", "AI绘画", "AI写作", "多模态AI"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-23",
+    "title": "通义千问",
+    "url": "https://tongyi.aliyun.com/",
+    "description": "通义千问是阿里云推出的企业级AI助手，基于Qwen3-Coder模型，在SWE-bench等评测中表现处于开源模型领先水平。核心优势在于无门槛编程理念，用户只需用自然语言描述需求，系统自动完成从需求分析到代码交付的全流程。其qwencode终端编程助手支持多实例并行处理不同任务，能同时完成智能问答、实时翻译、原型设计、创意绘图等工作。支持32K上下文长度，满足大型项目代码分析需求，提供代码逐行解释、生成Debug测试用例、反向推导报错堆栈等功能，适合企业级开发与团队协作场景。",
+    "category": "AI聊天助手",
+    "icon": "https://ts1.tc.mm.bing.net/th/id/ODF.hEWAcXewLmwopXRPAwe2tw",
+    "tags": ["AI编程", "AI绘画", "AI写作", "企业级AI"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-24",
+    "title": "Kimi",
+    "url": "https://kimi.online/",
+    "description": "Kimi是Moonshot AI推出的长上下文AI助手，K2.5模型支持256K token上下文窗口，能一次性处理数百万行代码的巨型项目，在LiveCodeBench v6和SWE-Bench Verified评测中分别得分83.1%和76.8%。其Kimi Code终端编程代理支持Agent模式和Shell模式双模式操作，能理解整个项目结构，实现多文件重构、架构变更和大规模调试。支持Python、Java、Go等主流语言的语法理解和代码生成，尤其在中文编程环境中优势明显，提供高速版API满足实时开发需求，适合维护大型复杂代码库的专业开发者。",
+    "category": "AI聊天助手",
+    "icon": "https://ts2.tc.mm.bing.net/th/id/ODF.CjNLs5h-AzZ6jpdjp65ExQ",
+    "tags": ["AI编程", "Kimi", "长上下文", "终端编程代理"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-25",
+    "title": "MiniMax",
+    "url": "https://minimaxi.com/",
+    "description": "MiniMax是稀宇科技推出的AI助手，M2.7旗舰模型采用稀疏混合专家架构，总参数2300亿，激活率4.3%，上下文窗口204.8K tokens。在编程领域系统性提升了Rust/Java/Golang/C++/TypeScript等语言能力，多语言任务整体表现达到业内领先水平。原生支持toolcalling与functionschema，可直接输出符合OpenAPI规范的调用请求，错误率低于3%。在SWE-Pro测试中正确率达56.22%，接近Claude Opus 4.6水平，能自动完成文献调研、实验设计、Bug排查等全流程工作，适合系统级开发与科研场景。",
+    "category": "AI聊天助手",
+    "icon": "https://minimaxi.com/favicon.ico",
+    "tags": ["AI编程", "MiniMax", "稀疏混合专家", "多语言编程"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-26",
+    "title": "DeepSeek",
+    "url": "https://www.deepseek.com/",
+    "description": "DeepSeek是幻方量化推出的AI助手，V4模型在SWE-Bench Pro基准测试中得分58.6分，开源模型全球第一。核心优势在于100万token超长上下文窗口，可一次性处理约75万字内容，相当于《三体》三部曲总量。其DeepSeek-TUI终端编程助手采用Rust开发，支持高达100万token上下文和原生RLM并行推理，可同时调度1-16个子任务并行运行。价格极具竞争力，V4-Flash每百万token仅0.28美元，对Python、PyTorch、Transformers等AI框架理解深度极强，隐私友好，可选择不发送代码到第三方，适合预算有限的开发者与大型项目维护。",
+    "category": "AI聊天助手",
+    "icon": "https://www.deepseek.com/favicon.ico",
+    "tags": ["AI编程", "DeepSeekV4", "超长上下文"],
+    "date": "2026-05-9"
+  },
+  {
+    "id": "bm-27",
+    "title": "智谱清言",
+    "url": "https://www.zhipucn.com/",
+    "description": "智谱清言是智谱AI基于GLM-5模型开发的AI助手，其coding能力已对齐Claude Opus 4.5，支持Python/Java等100+编程语言，提供调试建议与代码优化。核心功能包括代码生成、代码审查、跨语言转换（如C++算法转Python仅需1分钟）、时间复杂度对比分析等。内置代码解释器，支持上传Excel/CSV文件进行自动分析、绘图，并能编写与调试Python代码。深度集成多模态交互能力，内置清影视频生成、CogView AI绘画，支持通过'智能体中心'创建专属AI角色，适合全栈开发与创意编程场景。",
+    "category": "AI聊天助手",
+    "icon": "https://www.zhipucn.com/favicon.ico",
+    "tags": ["AI聊天助手", "GLM-5.1"],
+    "date": "2026-05-9"
+  }
+]
 }
