@@ -199,8 +199,12 @@ function filterByRatio(ratio) {
 
 function updateContentTitle() {
   const titleEl = document.getElementById('contentTitle');
-  const isAigcPage = window.location.pathname.includes('aigc.html');
-  const isBookmarksPage = window.location.pathname.includes('bookmarks.html');
+  
+  // 使用与 loadArticles 相同的页面检测逻辑
+  const pathname = window.location.pathname;
+  const pageName = pathname.split('/').pop().split('?')[0] || '';
+  const isAigcPage = pageName === 'aigc' || pageName === 'aigc.html' || pathname.includes('/aigc');
+  const isBookmarksPage = pageName === 'bookmarks' || pageName === 'bookmarks.html' || pathname.includes('/bookmarks');
 
   const filters = [];
   if (state.activeCategory) filters.push(`分类：${state.activeCategory}`);
@@ -229,8 +233,12 @@ function renderArticles() {
   const container = document.getElementById('articlesList');
   const articles = getFilteredArticles();
   const countEl = document.getElementById('contentCount');
-  const isAigcPage = window.location.pathname.includes('aigc.html');
-  const isBookmarksPage = window.location.pathname.includes('bookmarks.html');
+  
+  // 使用与 loadArticles 相同的页面检测逻辑
+  const pathname = window.location.pathname;
+  const pageName = pathname.split('/').pop().split('?')[0] || '';
+  const isAigcPage = pageName === 'aigc' || pageName === 'aigc.html' || pathname.includes('/aigc');
+  const isBookmarksPage = pageName === 'bookmarks' || pageName === 'bookmarks.html' || pathname.includes('/bookmarks');
 
   let countUnit = '篇';
   if (isAigcPage) countUnit = '条';
