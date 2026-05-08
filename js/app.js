@@ -284,16 +284,24 @@ function renderArticleCards(articles, container) {
 }
 
 function renderAigcCards(articles, container) {
+  // 计算基础路径
+  const pathname = window.location.pathname;
+  const basePath = pathname.substring(0, pathname.lastIndexOf('/') + 1);
+  
   articles.forEach((item, index) => {
     const card = document.createElement('div');
     card.className = 'aigc-card';
     card.style.animationDelay = `${index * 0.05}s`;
 
     const ratioClass = getAspectRatioClass(item.aspectRatio);
+    // 处理图片路径，如果是相对路径则添加基础路径
+    const imagePath = item.image.startsWith('http') || item.image.startsWith('/') 
+      ? item.image 
+      : basePath + item.image;
 
     card.innerHTML = `
       <div class="aigc-card-image-wrapper ${ratioClass}">
-        <img src="${item.image}" alt="${item.title}" class="aigc-card-image"
+        <img src="${imagePath}" alt="${item.title}" class="aigc-card-image"
           onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22><rect fill=%22%233d2b5e%22 width=%22400%22 height=%22300%22/><text fill=%22%23a89cc8%22 font-size=%2214%22 x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>图片加载失败</text></svg>'">
         <span class="aigc-card-ratio-badge">${item.aspectRatio}</span>
       </div>
