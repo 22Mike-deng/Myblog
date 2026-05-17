@@ -6,9 +6,10 @@
       "url": "https://github.com",
       "description": "全球最大的代码托管平台，开源社区的核心",
       "category": "开发工具",
-      "icon": "https://github.com/favicon.ico",
+      "icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
       "tags": ["代码托管", "开源", "Git"],
-      "date": "2026-05-01"
+      "date": "2026-05-01",
+      "heat": 980
     },
     {
       "id": "bm-2",
@@ -16,9 +17,10 @@
       "url": "https://stackoverflow.com",
       "description": "程序员问答社区，解决技术问题的首选",
       "category": "开发工具",
-      "icon": "https://stackoverflow.com/favicon.ico",
+      "icon": "https://ts3.tc.mm.bing.net/th/id/ODF.6L2MSAtvJufambMnk4ODuA",
       "tags": ["问答", "编程", "社区"],
-      "date": "2026-05-02"
+      "date": "2026-05-02",
+      "heat": 950
     },
     {
       "id": "bm-3",
@@ -26,9 +28,10 @@
       "url": "https://dribbble.com",
       "description": "设计师作品展示平台，UI/UX灵感来源",
       "category": "设计资源",
-      "icon": "https://dribbble.com/favicon.ico",
+      "icon": "https://ts3.tc.mm.bing.net/th/id/ODF.4EFQU6-FkOoR04ckR9B4Zg?w=32&h=32&qlt=90&pcl=fffffc&o=6&pid=1.2",
       "tags": ["设计", "UI", "灵感"],
-      "date": "2026-05-03"
+      "date": "2026-05-03",
+      "heat": 880
     },
     {
       "id": "bm-4",
@@ -36,9 +39,10 @@
       "url": "https://figma.com",
       "description": "在线协作设计工具，界面设计行业标准",
       "category": "设计资源",
-      "icon": "https://figma.com/favicon.ico",
+      "icon": "https://ts3.tc.mm.bing.net/th/id/ODF.MazXGA7GqlBu1-EzZxysmA",
       "tags": ["设计工具", "协作", "UI设计"],
-      "date": "2026-05-04"
+      "date": "2026-05-04",
+      "heat": 920
     },
     {
       "id": "bm-5",
@@ -48,7 +52,8 @@
       "category": "技术文档",
       "icon": "https://developer.mozilla.org/favicon.ico",
       "tags": ["文档", "前端", "Web标准"],
-      "date": "2026-05-05"
+      "date": "2026-05-05",
+      "heat": 900
     },
     {
       "id": "bm-6",
@@ -56,9 +61,10 @@
       "url": "https://v2ex.com",
       "description": "创意工作者社区，讨论技术、生活和创意",
       "category": "社区论坛",
-      "icon": "https://v2ex.com/favicon.ico",
+      "icon": "https://ts1.tc.mm.bing.net/th/id/ODF.i_XSAoCL3WmTrLlR3QLTYw",
       "tags": ["社区", "讨论", "创意"],
-      "date": "2026-05-06"
+      "date": "2026-05-06",
+      "heat": 850
     },
     {
       "id": "bm-7",
@@ -68,7 +74,8 @@
       "category": "设计资源",
       "icon": "https://ts1.tc.mm.bing.net/th/id/ODF.3MmA0GvHIJ0cnsJIcGIPDQ",
       "tags": ["图标", "矢量", "设计"],
-      "date": "2026-05-07"
+      "date": "2026-05-07",
+      "heat": 870
     },
     {
       "id": "bm-8",
@@ -78,7 +85,8 @@
       "category": "音乐平台",
       "icon": "https://y.qq.com/favicon.ico",
       "tags": ["音乐", "QQ"],
-      "date": "2026-05-08"
+      "date": "2026-05-08",
+      "heat": 820
     },
     {
       "id": "bm-9",
@@ -88,7 +96,8 @@
       "category": "音乐平台",
       "icon": "https://www.kugou.com/favicon.ico",
       "tags": ["音乐", "酷狗"],
-      "date": "2026-05-09"
+      "date": "2026-05-09",
+      "heat": 800
     },
     {
       "id": "bm-10",
@@ -98,7 +107,8 @@
       "category": "音乐平台",
       "icon": "https://music.163.com/favicon.ico",
       "tags": ["音乐", "网易云"],
-      "date": "2026-05-9"
+      "date": "2026-05-9",
+      "heat": 860
     },
     {
       "id": "bm-11",
@@ -108,7 +118,8 @@
       "category": "视频平台",
       "icon": "https://www.douyin.com/favicon.ico",
       "tags": ["抖音", "视频"],
-      "date": "2026-05-9"
+      "date": "2026-05-9",
+      "heat": 960
     },
     {
       "id": "bm-12",
@@ -118,7 +129,8 @@
       "category": "AI平台",
       "icon": "https://super.imyaigc.com/favicon.ico",
       "tags": ["智能助手", "AI平台"],
-      "date": "2026-05-9"
+      "date": "2026-05-9",
+      "heat": 780
     },
     {
       "id": "bm-13",
@@ -128,7 +140,8 @@
       "category": "AI创作",
       "icon": "https://www.oiioii.ai/favicon.ico",
       "tags": ["AI视频", "AI绘画","GPTimage2"],
-      "date": "2026-05-9"
+      "date": "2026-05-9",
+      "heat": 1750
     },
     {
       "id": "bm-14",
@@ -138,7 +151,8 @@
       "category": "AI编程",
       "icon": "https://ts4.tc.mm.bing.net/th/id/ODF.YIp5-bd6aV_n2t3WPPiW7w",
       "tags": ["AI编程", "Trae"],
-      "date": "2026-05-9"
+      "date": "2026-05-9",
+      "heat": 910
     },
     {
     "id": "bm-15",
@@ -148,7 +162,8 @@
     "category": "AI编程",
     "icon": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
     "tags": ["AI编程", "代码补全"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 940
   },
   {
     "id": "bm-16",
@@ -158,7 +173,8 @@
     "category": "AI编程",
     "icon": "https://www.cursor.com/favicon.ico",
     "tags": ["AI编程", "AI原生IDE"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 930
   },
   {
     "id": "bm-17",
@@ -168,7 +184,8 @@
     "category": "AI编程",
     "icon": "https://comate.baidu.com/favicon.ico",
     "tags": ["AI编程", "代码补全"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 840
   },
   {
     "id": "bm-18",
@@ -176,9 +193,10 @@
     "url": "https://www.anthropic.com/claude/code",
     "description": "Claude Code是Anthropic推出的命令行AI编码代理，由Claude Opus 4.6模型驱动，拥有1M token超大上下文窗口，在SWE-bench行业基准测试中得分80.8%，是2026年推理能力最强的AI编程工具之一。它能在终端中运行，读取整个代码库，处理复杂的多文件修改、调试会话、架构重构和功能实现，通过对话式交互完成开发任务。支持自然语言指令执行，适合处理长任务和需要深度推理的开发场景，提供免费版和19美元/月的专业版。",
     "category": "AI编程",
-    "icon": "https://www.anthropic.com/images/favicon-32x32.png",
+    "icon": "https://ts2.tc.mm.bing.net/th/id/ODF.RMAx37gt-2slZ6R1yzXuYw",
     "tags": ["AI编程", "代码补全"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 890
   },
   {
     "id": "bm-19",
@@ -188,7 +206,8 @@
     "category": "AI编程",
     "icon": "https://codeium.com/favicon.ico",
     "tags": ["AI编程", "免费AI编程"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 810
   },
   {
     "id": "bm-20",
@@ -198,7 +217,8 @@
     "category": "AI编程",
     "icon": "https://www.tabnine.com/favicon.ico",
     "tags": ["AI编程", "企业级AI编程"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 770
   },
   {
     "id": "bm-21",
@@ -208,7 +228,8 @@
     "category": "AI编程",
     "icon": "https://www.windsurf.ai/favicon.ico",
     "tags": ["AI编程", "轻量IDE", "智能体"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 830
   },
   {
     "id": "bm-22",
@@ -218,7 +239,8 @@
     "category": "AI聊天助手",
     "icon": "https://ts3.tc.mm.bing.net/th/id/ODF.llFymawgMlKVUuhTiuEA9g",
     "tags": ["AI编程", "AI绘画", "AI写作", "多模态AI"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 1900
   },
   {
     "id": "bm-23",
@@ -228,7 +250,8 @@
     "category": "AI聊天助手",
     "icon": "https://ts1.tc.mm.bing.net/th/id/ODF.hEWAcXewLmwopXRPAwe2tw",
     "tags": ["AI编程", "AI绘画", "AI写作", "企业级AI"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 880
   },
   {
     "id": "bm-24",
@@ -238,7 +261,8 @@
     "category": "AI聊天助手",
     "icon": "https://ts2.tc.mm.bing.net/th/id/ODF.CjNLs5h-AzZ6jpdjp65ExQ",
     "tags": ["AI编程", "Kimi", "长上下文", "终端编程代理"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 870
   },
   {
     "id": "bm-25",
@@ -248,7 +272,8 @@
     "category": "AI聊天助手",
     "icon": "https://minimaxi.com/favicon.ico",
     "tags": ["AI编程", "MiniMax", "稀疏混合专家", "多语言编程"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 790
   },
   {
     "id": "bm-26",
@@ -258,7 +283,8 @@
     "category": "AI聊天助手",
     "icon": "https://www.deepseek.com/favicon.ico",
     "tags": ["AI编程", "DeepSeekV4", "超长上下文"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 920
   },
   {
     "id": "bm-27",
@@ -268,7 +294,19 @@
     "category": "AI聊天助手",
     "icon": "https://www.zhipucn.com/favicon.ico",
     "tags": ["AI聊天助手", "GLM-5.1"],
-    "date": "2026-05-9"
+    "date": "2026-05-9",
+    "heat": 860
+  },
+  {
+    "id": "bm-28",
+    "title": "即梦AI",
+    "url": "https://jimeng.jianying.com/",
+    "description": "即梦AI是字节跳动推出的一站式AI创作平台，支持AI视频生成和AI图片生成。用户可通过自然语言或图片输入生成高质量的图像和视频。即梦AI提供AI绘画、智能画布、视频生成以及故事创作等多种功能，降低创作门槛，激发用户创意。用户可以用即梦AI的AI视频生成功能，输入简单的文案或图片，快速生成视频片段，且视频动效效果连贯性强、流畅自然。即梦AI已进行全面升级，上线 Seedance 2.0 和 Seedream 5.0 等全新模型，支持音视频同步生成、更优质的人像和设计效果。同时，智能多帧2.0功能实现视频与图片的自由拼接和精细化编辑，大幅提升创作灵活性。画布与Agent交互升级，整合创作流程，提供灵感搜索和创意设计模式，打造一站式“AI片场”，让创作更高效、更专业。",
+    "category": "AI创作",
+    "icon": "data:image/png;base64,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",
+    "tags": ["AI视频生成", "AI图片生成", "AI绘画", "AI创作"],
+    "date": "2026-05-9",
+    "heat": 1500
   }
 ]
 }

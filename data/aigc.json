@@ -9,7 +9,8 @@
       "aspectRatio": "16:9",
       "date": "2026-05-01",
       "tags": ["赛博朋克", "城市", "夜景","GPTimage2"],
-      "summary": "赛博朋克风格的城市夜景概念图"
+      "summary": "赛博朋克风格的城市夜景概念图",
+      "heat": 8750
     },
     {
       "id": "aigc-2",
@@ -20,7 +21,8 @@
       "aspectRatio": "3:4",
       "date": "2026-05-03",
       "tags": ["国风", "山水", "水墨","GPTimage2"],
-      "summary": "传统水墨风格山水画"
+      "summary": "传统水墨风格山水画",
+      "heat": 6200
     },
     {
       "id": "aigc-3",
@@ -31,7 +33,8 @@
       "aspectRatio": "9:16",
       "date": "2026-05-05",
       "tags": ["科幻", "机甲", "角色","GPTimage2"],
-      "summary": "科幻风格的机甲少女角色设计"
+      "summary": "科幻风格的机甲少女角色设计",
+      "heat": 9200
     },
     {
       "id": "aigc-4",
@@ -42,7 +45,8 @@
       "aspectRatio": "1:1",
       "date": "2026-05-08",
       "tags": ["美食", "摄影", "甜品","GPTimage2"],
-      "summary": "提拉米苏美食摄影"
+      "summary": "提拉米苏美食摄影",
+      "heat": 4800
     },
     {
       "id": "aigc-5",
@@ -53,7 +57,8 @@
       "aspectRatio": "9:16",
       "date": "2026-05-08",
       "tags": ["GPTimage2", "装甲", "科幻机甲", "二次元"],
-      "summary": "硬核科幻机甲"
+      "summary": "硬核科幻机甲",
+      "heat": 9850
     }
   ]
 }

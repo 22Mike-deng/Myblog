@@ -1,0 +1,16 @@
+- [x] `data/aivideo.json` 文件存在且格式正确
+- [x] `aivideo.html` 页面结构完整（侧边栏、主内容区、角色档案弹窗）
+- [x] `app.js` 中 `loadArticles` 函数支持加载 aivideo.json
+- [x] `app.js` 中 `renderArticles` 函数支持渲染视频卡片
+- [x] `app.js` 中 `renderVideoCards` 函数实现视频卡片渲染
+- [x] `app.js` 中页面检测逻辑包含 aivideo 页面
+- [x] `style.css` 中视频卡片样式正确
+- [x] 视频播放器容器支持比例设置（16:9, 9:16）
+- [x] 热度值显示样式正确
+- [x] 提示词复制功能正常工作
+- [x] 分类筛选功能正常工作
+- [x] 标签筛选功能正常工作
+- [x] 比例筛选功能正常工作
+- [x] 搜索功能正常工作
+- [x] 所有页面导航菜单包含 AIVideo 入口
+- [x] 移动端显示正常

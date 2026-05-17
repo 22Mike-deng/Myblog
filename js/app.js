@@ -26,6 +26,7 @@ async function loadArticles() {
     // 兼容服务器自动去掉 .html 后缀的情况
     const isAigcPage = pageName === 'aigc' || pageName === 'aigc.html' || pathname.includes('/aigc');
     const isBookmarksPage = pageName === 'bookmarks' || pageName === 'bookmarks.html' || pathname.includes('/bookmarks');
+    const isAivideoPage = pageName === 'aivideo' || pageName === 'aivideo.html' || pathname.includes('/aivideo');
     
     // 计算基础路径（处理子目录部署情况）
     const basePath = pathname.substring(0, pathname.lastIndexOf('/') + 1);
@@ -39,9 +40,12 @@ async function loadArticles() {
     } else if (isBookmarksPage) {
       url = basePath + 'data/bookmarks.json';
       dataKey = 'items';
+    } else if (isAivideoPage) {
+      url = basePath + 'data/aivideo.json';
+      dataKey = 'items';
     }
     
-    console.log('Loading data from:', url, 'Page:', pageName, 'isAigc:', isAigcPage, 'isBookmarks:', isBookmarksPage);
+    console.log('Loading data from:', url, 'Page:', pageName, 'isAigc:', isAigcPage, 'isBookmarks:', isBookmarksPage, 'isAivideo:', isAivideoPage);
     
     const response = await fetch(url);
     if (!response.ok) {
@@ -50,7 +54,12 @@ async function loadArticles() {
     const data = await response.json();
     const items = data[dataKey] || [];
     
-    state.articles = items.sort((a, b) => new Date(b.date) - new Date(a.date));
+    // 书签页面、AIGC页面和视频页面按热度排序，其他页面按日期排序
+    if (isBookmarksPage || isAigcPage || isAivideoPage) {
+      state.articles = items.sort((a, b) => (b.heat || 0) - (a.heat || 0));
+    } else {
+      state.articles = items.sort((a, b) => new Date(b.date) - new Date(a.date));
+    }
     console.log('Loaded', state.articles.length, 'items from', url);
   } catch (error) {
     console.error('加载文章失败:', error);
@@ -205,6 +214,7 @@ function updateContentTitle() {
   const pageName = pathname.split('/').pop().split('?')[0] || '';
   const isAigcPage = pageName === 'aigc' || pageName === 'aigc.html' || pathname.includes('/aigc');
   const isBookmarksPage = pageName === 'bookmarks' || pageName === 'bookmarks.html' || pathname.includes('/bookmarks');
+  const isAivideoPage = pageName === 'aivideo' || pageName === 'aivideo.html' || pathname.includes('/aivideo');
 
   const filters = [];
   if (state.activeCategory) filters.push(`分类：${state.activeCategory}`);
@@ -218,6 +228,8 @@ function updateContentTitle() {
     titleEl.textContent = '全部内容';
   } else if (isBookmarksPage) {
     titleEl.textContent = '全部书签';
+  } else if (isAivideoPage) {
+    titleEl.textContent = '全部视频';
   } else {
     titleEl.textContent = '全部文章';
   }
@@ -239,10 +251,12 @@ function renderArticles() {
   const pageName = pathname.split('/').pop().split('?')[0] || '';
   const isAigcPage = pageName === 'aigc' || pageName === 'aigc.html' || pathname.includes('/aigc');
   const isBookmarksPage = pageName === 'bookmarks' || pageName === 'bookmarks.html' || pathname.includes('/bookmarks');
+  const isAivideoPage = pageName === 'aivideo' || pageName === 'aivideo.html' || pathname.includes('/aivideo');
 
   let countUnit = '篇';
   if (isAigcPage) countUnit = '条';
   if (isBookmarksPage) countUnit = '个';
+  if (isAivideoPage) countUnit = '个';
 
   countEl.textContent = `${articles.length} ${countUnit}`;
   container.innerHTML = '';
@@ -261,6 +275,8 @@ function renderArticles() {
     renderAigcCards(articles, container);
   } else if (isBookmarksPage) {
     renderBookmarkCards(articles, container);
+  } else if (isAivideoPage) {
+    renderVideoCards(articles, container);
   } else {
     renderArticleCards(articles, container);
   }
@@ -291,6 +307,30 @@ function renderArticleCards(articles, container) {
   });
 }
 
+/**
+ * 根据AIGC热度值获取热度等级和颜色（1-10000范围）
+ * @param {number} heat - 热度值 (1-10000)
+ * @returns {Object} - 包含热度等级、颜色和图标
+ */
+function getAigcHeatInfo(heat) {
+  if (heat >= 9000) {
+    return { level: 'legendary', color: '#ff006e', icon: '👑', label: '传说' };
+  } else if (heat >= 7000) {
+    return { level: 'epic', color: '#ff4757', icon: '🔥', label: '史诗' };
+  } else if (heat >= 5000) {
+    return { level: 'rare', color: '#ffa502', icon: '⭐', label: '稀有' };
+  } else if (heat >= 3000) {
+    return { level: 'uncommon', color: '#2ed573', icon: '💎', label: '优秀' };
+  } else {
+    return { level: 'common', color: '#74b9ff', icon: '◆', label: '普通' };
+  }
+}
+
+/**
+ * 渲染AIGC卡片
+ * @param {Array} articles - AIGC内容数组
+ * @param {HTMLElement} container - 容器元素
+ */
 function renderAigcCards(articles, container) {
   // 计算基础路径
   const pathname = window.location.pathname;
@@ -307,11 +347,19 @@ function renderAigcCards(articles, container) {
       ? item.image 
       : basePath + item.image;
 
+    // 获取热度信息
+    const heat = item.heat || 0;
+    const heatInfo = getAigcHeatInfo(heat);
+
     card.innerHTML = `
       <div class="aigc-card-image-wrapper ${ratioClass}">
         <img src="${imagePath}" alt="${item.title}" class="aigc-card-image"
           onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22300%22><rect fill=%22%233d2b5e%22 width=%22400%22 height=%22300%22/><text fill=%22%23a89cc8%22 font-size=%2214%22 x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22>图片加载失败</text></svg>'">
         <span class="aigc-card-ratio-badge">${item.aspectRatio}</span>
+        <div class="aigc-card-heat" style="--heat-color: ${heatInfo.color}" title="热度: ${heat}">
+          <span class="aigc-heat-icon">${heatInfo.icon}</span>
+          <span class="aigc-heat-value">${heat.toLocaleString()}</span>
+        </div>
       </div>
       <div class="aigc-card-body">
         <div class="aigc-card-header">
@@ -375,6 +423,152 @@ async function copyPrompt(text, btnEl) {
   }
 }
 
+/**
+ * 渲染视频卡片 - 使用点击播放模式，避免自动播放
+ * @param {Array} videos - 视频数组
+ * @param {HTMLElement} container - 容器元素
+ */
+function renderVideoCards(videos, container) {
+  videos.forEach((item, index) => {
+    const card = document.createElement('div');
+    card.className = 'video-card';
+    card.style.animationDelay = `${index * 0.05}s`;
+
+    const ratioClass = getAspectRatioClass(item.aspectRatio);
+    const heatInfo = getHeatInfo(item.heat || 0);
+
+    const playerId = `video-player-${item.id}`;
+    const videoUrl = item.videoUrl;
+
+    card.innerHTML = `
+      <div class="video-card-header">
+        <div class="video-info">
+          <span class="video-category">${item.category}</span>
+          <h3 class="video-title">${escapeHtml(item.title)}</h3>
+        </div>
+        <div class="video-heat" style="color: ${heatInfo.color}" title="热度: ${item.heat || 0}">
+          <span class="heat-icon">${heatInfo.icon}</span>
+          <span class="heat-value">${item.heat || 0}</span>
+        </div>
+      </div>
+      <div class="video-player-wrapper ${ratioClass}" id="${playerId}">
+        <div class="video-thumbnail" data-video-url="${videoUrl}" data-player-id="${playerId}">
+          <div class="video-play-overlay">
+            <div class="video-play-button">▶</div>
+            <div class="video-play-text">点击播放</div>
+          </div>
+        </div>
+      </div>
+      <div class="video-card-body">
+        <div class="video-meta">
+          <div class="video-tags">
+            ${item.tags.map(tag => `<span class="video-tag">${tag}</span>`).join('')}
+          </div>
+          <time class="video-date">${item.date}</time>
+        </div>
+        <div class="video-prompt">
+          <span class="video-prompt-label">提示词：</span>
+          <span class="video-prompt-text">${escapeHtml(item.prompt)}</span>
+        </div>
+        <div class="video-actions">
+          <button class="video-copy-btn" data-prompt="${escapeHtml(item.prompt)}">
+            复制提示词
+          </button>
+          <button class="video-refresh-btn" data-player-id="${playerId}" data-video-url="${videoUrl}">
+            🔄 刷新
+          </button>
+          <button class="video-fullscreen-btn" data-player-id="${playerId}" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 14px; transition: all 0.3s ease;">
+            ⛶ 全屏预览
+          </button>
+        </div>
+      </div>
+    `;
+
+    // 点击播放功能
+    const thumbnail = card.querySelector('.video-thumbnail');
+    thumbnail.addEventListener('click', () => {
+      const playerWrapper = document.getElementById(playerId);
+      const url = thumbnail.dataset.videoUrl;
+      
+      // 替换为 iframe
+      playerWrapper.innerHTML = `
+        <iframe 
+          src="${url}" 
+          title="${escapeHtml(item.title)}"
+          frameborder="0" 
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen
+          style="width: 100%; height: 100%;">
+        </iframe>
+      `;
+    });
+
+    card.querySelector('.video-copy-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      copyPrompt(item.prompt, e.currentTarget);
+    });
+
+    card.querySelector('.video-refresh-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const playerId = e.currentTarget.dataset.playerId;
+      const url = e.currentTarget.dataset.videoUrl;
+      const playerWrapper = document.getElementById(playerId);
+      if (playerWrapper) {
+        playerWrapper.innerHTML = `
+          <iframe 
+            src="${url}" 
+            title="${escapeHtml(item.title)}"
+            frameborder="0" 
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen
+            style="width: 100%; height: 100%;">
+          </iframe>
+        `;
+      }
+    });
+
+    card.querySelector('.video-fullscreen-btn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      const playerId = e.currentTarget.dataset.playerId;
+      const playerWrapper = document.getElementById(playerId);
+      const iframe = playerWrapper.querySelector('iframe');
+      if (iframe) {
+        if (iframe.requestFullscreen) {
+          iframe.requestFullscreen();
+        } else if (iframe.webkitRequestFullscreen) {
+          iframe.webkitRequestFullscreen();
+        } else if (iframe.msRequestFullscreen) {
+          iframe.msRequestFullscreen();
+        }
+      }
+    });
+
+    container.appendChild(card);
+  });
+}
+
+/**
+ * 根据热度值获取热度等级和颜色
+ * @param {number} heat - 热度值 (0-100)
+ * @returns {Object} - 包含热度等级、颜色和图标
+ */
+function getHeatInfo(heat) {
+  if (heat >= 900) {
+    return { level: 'hot', color: '#ff4757', icon: '🔥', label: '超热' };
+  } else if (heat >= 800) {
+    return { level: 'warm', color: '#ff6348', icon: '🔥', label: '热门' };
+  } else if (heat >= 700) {
+    return { level: 'normal', color: '#ffa502', icon: '⭐', label: '一般' };
+  } else {
+    return { level: 'cool', color: '#74b9ff', icon: '❄️', label: '冷门' };
+  }
+}
+
+/**
+ * 渲染书签卡片
+ * @param {Array} bookmarks - 书签数组
+ * @param {HTMLElement} container - 容器元素
+ */
 function renderBookmarkCards(bookmarks, container) {
   bookmarks.forEach((item, index) => {
     const card = document.createElement('a');
@@ -388,6 +582,10 @@ function renderBookmarkCards(bookmarks, container) {
       ? `<img src="${item.icon}" alt="" class="bookmark-icon" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
       : '';
 
+    // 获取热度信息
+    const heat = item.heat || 50;
+    const heatInfo = getHeatInfo(heat);
+
     card.innerHTML = `
       <div class="bookmark-card-header">
         <div class="bookmark-icon-wrapper">
@@ -397,6 +595,10 @@ function renderBookmarkCards(bookmarks, container) {
         <div class="bookmark-info">
           <h3 class="bookmark-title">${escapeHtml(item.title)}</h3>
           <span class="bookmark-category">${item.category}</span>
+        </div>
+        <div class="bookmark-heat" style="--heat-color: ${heatInfo.color}" title="热度: ${heat}">
+          <span class="bookmark-heat-icon">${heatInfo.icon}</span>
+          <span class="bookmark-heat-value">${heat}</span>
         </div>
       </div>
       <p class="bookmark-description">${escapeHtml(item.description)}</p>

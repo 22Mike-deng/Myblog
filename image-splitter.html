@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片分割器 - 工具箱</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <!-- JSZip for ZIP export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <style>
+    /* 图片分割器专用样式 */
+    .splitter-container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .upload-zone {
+      border: 3px dashed var(--color-card-border);
+      padding: var(--spacing-xl);
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      background: var(--color-bg-panel);
+    }
+
+    .upload-zone:hover,
+    .upload-zone.dragover {
+      border-color: var(--color-accent);
+      background: rgba(255, 107, 157, 0.1);
+    }
+
+    .upload-zone-icon {
+      font-size: 48px;
+      margin-bottom: var(--spacing-md);
+    }
+
+    .upload-zone-text {
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      color: var(--color-text);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .upload-zone-hint {
+      font-size: 8px;
+      color: var(--color-text-dim);
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .settings-panel {
+      background: var(--color-card-bg);
+      border: 4px solid var(--color-card-border);
+      padding: var(--spacing-lg);
+      margin-top: var(--spacing-lg);
+    }
+
+    .setting-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-md);
+    }
+
+    @media (max-width: 600px) {
+      .setting-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .setting-item label {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-size: 10px;
+      color: var(--color-text);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .setting-item label::before {
+      content: '▸';
+      color: var(--color-accent);
+    }
+
+    .range-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-md);
+    }
+
+    .range-input {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 8px;
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-card-border);
+      outline: none;
+    }
+
+    .range-input::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: var(--color-accent);
+      border: 3px solid var(--color-bg-dark);
+      cursor: pointer;
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+    }
+
+    .number-input {
+      width: 60px;
+      padding: var(--spacing-xs);
+      background: var(--color-bg-dark);
+      border: 3px solid var(--color-card-border);
+      color: var(--color-text);
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      text-align: center;
+    }
+
+    .total-info {
+      text-align: center;
+      padding-top: var(--spacing-md);
+      border-top: 2px solid var(--color-card-border);
+      font-size: 10px;
+      color: var(--color-text-dim);
+    }
+
+    .total-number {
+      color: var(--color-accent);
+      font-family: var(--font-pixel);
+      font-size: 14px;
+    }
+
+    /* Naming Panel */
+    .naming-panel {
+      background: var(--color-card-bg);
+      border: 4px solid var(--color-card-border);
+      padding: var(--spacing-lg);
+      margin-top: var(--spacing-lg);
+    }
+
+    .naming-title {
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      color: var(--color-text);
+      margin-bottom: var(--spacing-md);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .naming-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .naming-option {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--spacing-sm);
+      padding: var(--spacing-sm);
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-card-border);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .naming-option:hover {
+      border-color: var(--color-accent);
+    }
+
+    .naming-option input[type="radio"] {
+      margin-top: 2px;
+      accent-color: var(--color-accent);
+    }
+
+    .naming-option-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .naming-option-text strong {
+      font-size: 9px;
+      color: var(--color-text);
+    }
+
+    .naming-hint {
+      font-size: 8px;
+      color: var(--color-text-dim);
+    }
+
+    .naming-custom {
+      padding: var(--spacing-md);
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-card-border);
+      margin-bottom: var(--spacing-md);
+    }
+
+    .naming-input-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--spacing-md);
+    }
+
+    @media (max-width: 500px) {
+      .naming-input-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .naming-input-item label {
+      display: block;
+      font-size: 8px;
+      color: var(--color-text);
+      margin-bottom: var(--spacing-xs);
+    }
+
+    .naming-text-input,
+    .naming-number-input {
+      width: 100%;
+      padding: var(--spacing-sm);
+      background: var(--color-bg-panel);
+      border: 3px solid var(--color-card-border);
+      color: var(--color-text);
+      font-family: var(--font-pixel);
+      font-size: 9px;
+    }
+
+    .naming-number-input {
+      text-align: center;
+    }
+
+    .naming-preview {
+      padding: var(--spacing-sm);
+      background: var(--color-bg-dark);
+      border: 2px dashed var(--color-card-border);
+      font-size: 8px;
+      color: var(--color-text-dim);
+      text-align: center;
+    }
+
+    .naming-preview span {
+      color: var(--color-accent);
+    }
+
+    .preview-panel {
+      background: var(--color-card-bg);
+      border: 4px solid var(--color-card-border);
+      padding: var(--spacing-lg);
+      margin-top: var(--spacing-lg);
+    }
+
+    .preview-title {
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      color: var(--color-text);
+      margin-bottom: var(--spacing-md);
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .preview-title::before {
+      content: '👁';
+    }
+
+    .canvas-container {
+      background: var(--color-bg-dark);
+      border: 3px solid var(--color-card-border);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: var(--spacing-md);
+      overflow: auto;
+    }
+
+    #previewCanvas {
+      max-width: 100%;
+      image-rendering: pixelated;
+    }
+
+    .action-panel {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-md);
+      margin-top: var(--spacing-lg);
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      padding: var(--spacing-md) var(--spacing-xl);
+      background: var(--color-accent);
+      border: 4px solid var(--color-card-border);
+      color: var(--color-bg-dark);
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      cursor: pointer;
+      box-shadow: var(--shadow-pixel);
+      transition: all var(--transition-fast);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-accent-hover);
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      padding: var(--spacing-md) var(--spacing-xl);
+      background: var(--color-secondary);
+      border: 4px solid var(--color-card-border);
+      color: var(--color-bg-dark);
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      cursor: pointer;
+      box-shadow: var(--shadow-pixel);
+      transition: all var(--transition-fast);
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-secondary-hover);
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+    }
+
+    .thumbnails-panel {
+      background: var(--color-card-bg);
+      border: 4px solid var(--color-card-border);
+      padding: var(--spacing-lg);
+      margin-top: var(--spacing-lg);
+    }
+
+    .thumbnails-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-md);
+      flex-wrap: wrap;
+      gap: var(--spacing-sm);
+    }
+
+    .thumbnails-title {
+      font-family: var(--font-pixel);
+      font-size: 10px;
+      color: var(--color-text);
+    }
+
+    .thumbnails-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: var(--spacing-md);
+    }
+
+    .thumbnail-item {
+      position: relative;
+      border: 3px solid var(--color-card-border);
+      background: var(--color-bg-dark);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .thumbnail-item:hover {
+      border-color: var(--color-accent);
+      transform: scale(1.05);
+    }
+
+    .thumbnail-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .thumbnail-index {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: var(--color-bg-dark);
+      color: var(--color-text);
+      font-size: 8px;
+      padding: 2px 6px;
+      border-top: 2px solid var(--color-card-border);
+      border-left: 2px solid var(--color-card-border);
+    }
+
+    .thumbnail-actions {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--spacing-xs);
+      opacity: 0;
+      transition: opacity var(--transition-fast);
+      flex-wrap: wrap;
+      padding: var(--spacing-xs);
+    }
+
+    .thumbnail-item:hover .thumbnail-actions {
+      opacity: 1;
+    }
+
+    .thumbnail-btn {
+      padding: 4px 8px;
+      background: var(--color-accent);
+      border: 2px solid var(--color-bg-dark);
+      color: var(--color-bg-dark);
+      font-family: var(--font-pixel);
+      font-size: 7px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .thumbnail-btn:last-child {
+      background: var(--color-secondary);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      border-top-color: var(--color-accent);
+      animation: spin 1s linear infinite;
+      margin-right: var(--spacing-sm);
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="avatar-container" id="avatarContainer">
+          <img src="images/avatar.png" alt="头像" class="avatar" id="avatarImg" onerror="this.style.display='none'">
+        </div>
+        <nav class="nav-menu">
+          <a href="index.html" class="nav-item">📝 文章</a>
+          <a href="aigc.html" class="nav-item">🎨 AIGC</a>
+          <a href="aivideo.html" class="nav-item">📹 AIVideo</a>
+          <a href="bookmarks.html" class="nav-item">🔖 书签</a>
+          <a href="tools.html" class="nav-item">🛠️ 工具箱</a>
+        </nav>
+        <h1 class="site-title">图片分割器</h1>
+        <p class="site-subtitle">Image Splitter</p>
+      </div>
+
+      <div class="about-section">
+        <h3 class="sidebar-title">关于</h3>
+        <p class="about-text">将图片分割成多个小图块</p>
+      </div>
+
+      <footer class="sidebar-footer">
+        <p>&copy; 2026 我的个人博客</p>
+      </footer>
+    </aside>
+
+    <main class="main-content">
+      <header class="content-header">
+        <h2 class="content-title">图片分割器</h2>
+        <a href="tools.html" class="back-link">← 返回工具箱</a>
+      </header>
+
+      <div class="splitter-container">
+        <!-- 上传区域 -->
+        <div class="upload-zone" id="uploadZone">
+          <div class="upload-zone-icon">📁</div>
+          <div class="upload-zone-text">点击或拖拽上传图片</div>
+          <div class="upload-zone-hint">支持 JPG、PNG、GIF、WebP 格式，最大 10MB</div>
+          <input type="file" id="fileInput" class="file-input" accept="image/*">
+        </div>
+
+        <!-- 设置面板 -->
+        <div class="settings-panel hidden" id="settingsPanel">
+          <div class="setting-row">
+            <div class="setting-item">
+              <label>行数</label>
+              <div class="range-input-wrapper">
+                <input type="range" id="rowsRange" class="range-input" min="1" max="10" value="2">
+                <input type="number" id="rowsInput" class="number-input" min="1" max="10" value="2">
+              </div>
+            </div>
+            <div class="setting-item">
+              <label>列数</label>
+              <div class="range-input-wrapper">
+                <input type="range" id="colsRange" class="range-input" min="1" max="10" value="2">
+                <input type="number" id="colsInput" class="number-input" min="1" max="10" value="2">
+              </div>
+            </div>
+          </div>
+          <div class="total-info">
+            共生成 <span class="total-number" id="totalSlices">4</span> 张图片
+          </div>
+        </div>
+
+        <!-- 命名规则面板 -->
+        <div class="naming-panel hidden" id="namingPanel">
+          <div class="naming-title">📋 命名规则</div>
+          <div class="naming-options">
+            <label class="naming-option">
+              <input type="radio" name="namingMode" value="original" checked>
+              <span class="naming-option-text">
+                <strong>原文件名模式</strong>
+                <span class="naming-hint">原文件名_1.png, 原文件名_2.png...</span>
+              </span>
+            </label>
+            <label class="naming-option">
+              <input type="radio" name="namingMode" value="custom">
+              <span class="naming-option-text">
+                <strong>自定义前缀</strong>
+                <span class="naming-hint">使用自定义前缀 + 序号</span>
+              </span>
+            </label>
+          </div>
+          <div class="naming-custom hidden" id="namingCustom">
+            <div class="naming-input-row">
+              <div class="naming-input-item">
+                <label>前缀</label>
+                <input type="text" id="customPrefix" class="naming-text-input" placeholder="例如: slice_">
+              </div>
+              <div class="naming-input-item">
+                <label>起始序号</label>
+                <input type="number" id="startIndex" class="naming-number-input" min="1" value="1">
+              </div>
+            </div>
+          </div>
+          <div class="naming-preview">
+            预览: <span id="namingPreview">原文件名_1.png, 原文件名_2.png...</span>
+          </div>
+        </div>
+
+        <!-- 预览区域 -->
+        <div class="preview-panel hidden" id="previewPanel">
+          <div class="preview-title">预览</div>
+          <div class="canvas-container">
+            <canvas id="previewCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div class="action-panel hidden" id="actionPanel">
+          <button class="btn-primary" id="generateBtn">✂️ 生成分割图</button>
+        </div>
+
+        <!-- 缩略图区域 -->
+        <div class="thumbnails-panel hidden" id="thumbnailsPanel">
+          <div class="thumbnails-header">
+            <span class="thumbnails-title">分割结果</span>
+            <button class="btn-secondary" id="downloadAllBtn">📦 下载全部 (ZIP)</button>
+          </div>
+          <div class="thumbnails-grid" id="thumbnailsGrid"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // 图片分割器逻辑
+    const state = {
+      originalImage: null,
+      fileName: '',
+      rows: 2,
+      cols: 2,
+      slices: []
+    };
+
+    // DOM 元素
+    const uploadZone = document.getElementById('uploadZone');
+    const fileInput = document.getElementById('fileInput');
+    const settingsPanel = document.getElementById('settingsPanel');
+    const previewPanel = document.getElementById('previewPanel');
+    const actionPanel = document.getElementById('actionPanel');
+    const thumbnailsPanel = document.getElementById('thumbnailsPanel');
+    const previewCanvas = document.getElementById('previewCanvas');
+    const thumbnailsGrid = document.getElementById('thumbnailsGrid');
+
+    // 行数控制
+    const rowsRange = document.getElementById('rowsRange');
+    const rowsInput = document.getElementById('rowsInput');
+    const colsRange = document.getElementById('colsRange');
+    const colsInput = document.getElementById('colsInput');
+    const totalSlices = document.getElementById('totalSlices');
+
+    // 上传区域点击
+    uploadZone.addEventListener('click', () => fileInput.click());
+
+    // 文件选择
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files.length > 0) {
+        handleFile(e.target.files[0]);
+      }
+    });
+
+    // 拖拽上传
+    uploadZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadZone.classList.add('dragover');
+    });
+
+    uploadZone.addEventListener('dragleave', () => {
+      uploadZone.classList.remove('dragover');
+    });
+
+    uploadZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadZone.classList.remove('dragover');
+      const files = e.dataTransfer.files;
+      if (files.length > 0 && files[0].type.startsWith('image/')) {
+        handleFile(files[0]);
+      }
+    });
+
+    // 处理文件
+    function handleFile(file) {
+      const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+      if (!validTypes.includes(file.type)) {
+        alert('不支持的文件格式');
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        alert('文件大小超过 10MB 限制');
+        return;
+      }
+
+      state.fileName = file.name.replace(/\.[^/.]+$/, '');
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          state.originalImage = img;
+          showSettings();
+          updatePreview();
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // 显示设置面板
+    function showSettings() {
+      uploadZone.classList.add('hidden');
+      settingsPanel.classList.remove('hidden');
+      namingPanel.classList.remove('hidden');
+      previewPanel.classList.remove('hidden');
+      actionPanel.classList.remove('hidden');
+      updateNamingPreview();
+    }
+
+    // 命名规则相关元素
+    const namingPanel = document.getElementById('namingPanel');
+    const namingCustom = document.getElementById('namingCustom');
+    const customPrefix = document.getElementById('customPrefix');
+    const startIndex = document.getElementById('startIndex');
+    const namingPreview = document.getElementById('namingPreview');
+    const namingModeInputs = document.querySelectorAll('input[name="namingMode"]');
+
+    // 命名模式切换
+    namingModeInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        if (input.value === 'custom') {
+          namingCustom.classList.remove('hidden');
+        } else {
+          namingCustom.classList.add('hidden');
+        }
+        updateNamingPreview();
+      });
+    });
+
+    // 自定义前缀输入
+    customPrefix.addEventListener('input', updateNamingPreview);
+    startIndex.addEventListener('change', updateNamingPreview);
+
+    // 更新命名预览
+    function updateNamingPreview() {
+      const mode = document.querySelector('input[name="namingMode"]:checked').value;
+      
+      if (mode === 'original') {
+        namingPreview.textContent = '原文件名_1.png, 原文件名_2.png...';
+      } else {
+        const prefix = customPrefix.value.trim();
+        const start = parseInt(startIndex.value) || 1;
+        
+        if (prefix) {
+          namingPreview.textContent = `${prefix}${start}.png, ${prefix}${start + 1}.png...`;
+        } else {
+          namingPreview.textContent = `${start}.png, ${start + 1}.png...`;
+        }
+      }
+    }
+
+    // 生成文件名
+    function generateFileName(index) {
+      const mode = document.querySelector('input[name="namingMode"]:checked').value;
+      const start = parseInt(startIndex.value) || 1;
+      
+      if (mode === 'original') {
+        return `${state.fileName}_${index}.png`;
+      } else {
+        const prefix = customPrefix.value.trim();
+        const fileIndex = start + index - 1;
+        
+        if (prefix) {
+          return `${prefix}${fileIndex}.png`;
+        } else {
+          return `${fileIndex}.png`;
+        }
+      }
+    }
+
+    // 更新总数显示
+    function updateTotal() {
+      const total = state.rows * state.cols;
+      totalSlices.textContent = total;
+    }
+
+    // 更新预览
+    function updatePreview() {
+      if (!state.originalImage) return;
+
+      const ctx = previewCanvas.getContext('2d');
+      const maxWidth = 800;
+      const scale = Math.min(maxWidth / state.originalImage.width, 1);
+      const width = state.originalImage.width * scale;
+      const height = state.originalImage.height * scale;
+
+      previewCanvas.width = width;
+      previewCanvas.height = height;
+
+      ctx.drawImage(state.originalImage, 0, 0, width, height);
+
+      // 绘制网格线
+      ctx.strokeStyle = '#ff6b9d';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([5, 5]);
+
+      for (let i = 1; i < state.rows; i++) {
+        const y = (height / state.rows) * i;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      for (let i = 1; i < state.cols; i++) {
+        const x = (width / state.cols) * i;
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+
+      ctx.setLineDash([]);
+    }
+
+    // 行数控制
+    rowsRange.addEventListener('input', () => {
+      state.rows = parseInt(rowsRange.value);
+      rowsInput.value = state.rows;
+      updateTotal();
+      updatePreview();
+    });
+
+    rowsInput.addEventListener('change', () => {
+      let val = parseInt(rowsInput.value);
+      if (val < 1) val = 1;
+      if (val > 10) val = 10;
+      state.rows = val;
+      rowsRange.value = val;
+      rowsInput.value = val;
+      updateTotal();
+      updatePreview();
+    });
+
+    // 列数控制
+    colsRange.addEventListener('input', () => {
+      state.cols = parseInt(colsRange.value);
+      colsInput.value = state.cols;
+      updateTotal();
+      updatePreview();
+    });
+
+    colsInput.addEventListener('change', () => {
+      let val = parseInt(colsInput.value);
+      if (val < 1) val = 1;
+      if (val > 10) val = 10;
+      state.cols = val;
+      colsRange.value = val;
+      colsInput.value = val;
+      updateTotal();
+      updatePreview();
+    });
+
+    // 生成分割图
+    document.getElementById('generateBtn').addEventListener('click', () => {
+      generateSlices();
+    });
+
+    function generateSlices() {
+      if (!state.originalImage) return;
+
+      state.slices = [];
+      const sliceWidth = state.originalImage.width / state.cols;
+      const sliceHeight = state.originalImage.height / state.rows;
+
+      for (let row = 0; row < state.rows; row++) {
+        for (let col = 0; col < state.cols; col++) {
+          const canvas = document.createElement('canvas');
+          canvas.width = sliceWidth;
+          canvas.height = sliceHeight;
+          const ctx = canvas.getContext('2d');
+
+          ctx.drawImage(
+            state.originalImage,
+            col * sliceWidth, row * sliceHeight,
+            sliceWidth, sliceHeight,
+            0, 0,
+            sliceWidth, sliceHeight
+          );
+
+          state.slices.push({
+            canvas: canvas,
+            row: row,
+            col: col,
+            index: state.slices.length + 1
+          });
+        }
+      }
+
+      showThumbnails();
+    }
+
+    // 显示缩略图
+    function showThumbnails() {
+      thumbnailsPanel.classList.remove('hidden');
+      thumbnailsGrid.innerHTML = '';
+
+      state.slices.forEach((slice) => {
+        const item = document.createElement('div');
+        item.className = 'thumbnail-item';
+
+        const img = document.createElement('img');
+        img.src = slice.canvas.toDataURL('image/png');
+        img.alt = `Slice ${slice.index}`;
+        img.style.cursor = 'pointer';
+        img.onclick = () => showPreviewModal(slice);
+
+        const index = document.createElement('span');
+        index.className = 'thumbnail-index';
+        index.textContent = slice.index;
+
+        const actions = document.createElement('div');
+        actions.className = 'thumbnail-actions';
+
+        const previewBtn = document.createElement('button');
+        previewBtn.className = 'thumbnail-btn';
+        previewBtn.textContent = '预览';
+        previewBtn.onclick = (e) => {
+          e.stopPropagation();
+          showPreviewModal(slice);
+        };
+
+        const downloadBtn = document.createElement('button');
+        downloadBtn.className = 'thumbnail-btn';
+        downloadBtn.textContent = '下载';
+        downloadBtn.onclick = (e) => {
+          e.stopPropagation();
+          downloadSlice(slice);
+        };
+
+        actions.appendChild(previewBtn);
+        actions.appendChild(downloadBtn);
+        item.appendChild(img);
+        item.appendChild(index);
+        item.appendChild(actions);
+        thumbnailsGrid.appendChild(item);
+      });
+
+      // 滚动到缩略图区域
+      thumbnailsPanel.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 显示预览弹窗
+    function showPreviewModal(slice) {
+      // 创建弹窗
+      const modal = document.createElement('div');
+      modal.className = 'preview-modal';
+      modal.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        padding: 20px;
+      `;
+
+      const content = document.createElement('div');
+      content.style.cssText = `
+        position: relative;
+        max-width: 90%;
+        max-height: 90%;
+      `;
+
+      const img = document.createElement('img');
+      img.src = slice.canvas.toDataURL('image/png');
+      img.style.cssText = `
+        max-width: 100%;
+        max-height: 80vh;
+        border: 4px solid #4a3b6b;
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      `;
+
+      const info = document.createElement('div');
+      info.style.cssText = `
+        text-align: center;
+        margin-top: 10px;
+        color: #fff;
+        font-family: 'Press Start 2P', monospace;
+        font-size: 10px;
+      `;
+      info.textContent = `第 ${slice.index} 张 | ${slice.canvas.width} x ${slice.canvas.height}px`;
+
+      const closeBtn = document.createElement('button');
+      closeBtn.textContent = '✕';
+      closeBtn.style.cssText = `
+        position: absolute;
+        top: -40px;
+        right: 0;
+        background: #ff6b9d;
+        border: none;
+        color: #2d1b4e;
+        font-size: 20px;
+        width: 36px;
+        height: 36px;
+        cursor: pointer;
+        font-family: 'Press Start 2P', monospace;
+      `;
+      closeBtn.onclick = () => modal.remove();
+
+      content.appendChild(closeBtn);
+      content.appendChild(img);
+      content.appendChild(info);
+      modal.appendChild(content);
+      document.body.appendChild(modal);
+
+      // 点击背景关闭
+      modal.onclick = (e) => {
+        if (e.target === modal) modal.remove();
+      };
+
+      // ESC 关闭
+      const closeOnEsc = (e) => {
+        if (e.key === 'Escape') {
+          modal.remove();
+          document.removeEventListener('keydown', closeOnEsc);
+        }
+      };
+      document.addEventListener('keydown', closeOnEsc);
+    }
+
+    // 下载单张
+    function downloadSlice(slice) {
+      const link = document.createElement('a');
+      link.download = generateFileName(slice.index);
+      link.href = slice.canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // 下载全部
+    document.getElementById('downloadAllBtn').addEventListener('click', async () => {
+      if (state.slices.length === 0) return;
+
+      const btn = document.getElementById('downloadAllBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span>打包中...';
+
+      try {
+        const zip = new JSZip();
+        const folder = zip.folder(state.fileName || 'sliced_images');
+
+        state.slices.forEach((slice) => {
+          const dataUrl = slice.canvas.toDataURL('image/png');
+          const base64Data = dataUrl.split(',')[1];
+          const fileName = generateFileName(slice.index);
+          folder.file(fileName, base64Data, { base64: true });
+        });
+
+        const content = await zip.generateAsync({ type: 'blob' });
+        saveAs(content, `${state.fileName || 'sliced_images'}.zip`);
+      } catch (error) {
+        alert('打包失败: ' + error.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '📦 下载全部 (ZIP)';
+      }
+    });
+  </script>
+</body>
+</html>
