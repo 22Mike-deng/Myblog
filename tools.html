@@ -30,7 +30,7 @@
         <p class="about-text">作者简单自制实用的在线小工具</p>
         <div class="stats">
           <div class="stat-item">
-            <span class="stat-number" id="toolCount">1</span>
+            <span class="stat-number" id="toolCount">0</span>
             <span class="stat-label">工具</span>
           </div>
         </div>
@@ -44,19 +44,11 @@
     <main class="main-content">
       <header class="content-header">
         <h2 class="content-title">全部工具</h2>
-        <span class="content-count" id="contentCount">1 个</span>
+        <span class="content-count" id="contentCount">0 个</span>
       </header>
 
       <section class="tools-grid" id="toolsList">
-        <a href="image-splitter.html" class="tool-card">
-          <div class="tool-icon">✂️</div>
-          <h3 class="tool-name">图片分割器</h3>
-          <p class="tool-desc">将图片轻松分割成多个小图块，支持批量处理和自定义命名规则</p>
-          <div class="tool-tags">
-            <span class="tool-tag">图片处理</span>
-            <span class="tool-tag">批量处理</span>
-          </div>
-        </a>
+        <!-- 工具列表将通过 JavaScript 动态加载 -->
       </section>
     </main>
   </div>
@@ -104,5 +96,38 @@
   </aside>
 
   <script src="js/app.js"></script>
+  <script>
+    // 工具页面专用脚本：加载工具列表
+    async function loadTools() {
+      try {
+        const response = await fetch('data/tools.json');
+        const data = await response.json();
+        const tools = data.tools || [];
+        
+        // 更新统计
+        document.getElementById('toolCount').textContent = tools.length;
+        document.getElementById('contentCount').textContent = tools.length + ' 个';
+        
+        // 渲染工具列表
+        const container = document.getElementById('toolsList');
+        container.innerHTML = tools.map(tool => `
+          <a href="${tool.url}" class="tool-card">
+            <div class="tool-icon">${tool.icon}</div>
+            <h3 class="tool-name">${tool.name}</h3>
+            <p class="tool-desc">${tool.description}</p>
+            <div class="tool-tags">
+              ${tool.tags.map(tag => `<span class="tool-tag">${tag}</span>`).join('')}
+            </div>
+          </a>
+        `).join('');
+      } catch (error) {
+        console.error('加载工具列表失败:', error);
+        document.getElementById('toolsList').innerHTML = '<p style="text-align: center; color: var(--color-text-dim);">加载工具列表失败</p>';
+      }
+    }
+    
+    // 页面加载完成后执行
+    document.addEventListener('DOMContentLoaded', loadTools);
+  </script>
 </body>
 </html>

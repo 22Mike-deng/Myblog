@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片水印 - 工具箱</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    .tool-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--spacing-lg);
+    }
+    
+    .tool-header {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .tool-title {
+      font-size: 1.5rem;
+      color: var(--color-accent);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .tool-subtitle {
+      color: var(--color-text-dim);
+      font-size: 0.875rem;
+    }
+    
+    .upload-area {
+      border: 3px dashed var(--color-card-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      text-align: center;
+      background: var(--color-bg-panel);
+      transition: all 0.3s;
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .upload-area:hover,
+    .upload-area.dragover {
+      border-color: var(--color-accent);
+      background: rgba(255, 105, 180, 0.05);
+    }
+    
+    .upload-icon {
+      font-size: 3rem;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .upload-text {
+      color: var(--color-text);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .upload-hint {
+      color: var(--color-text-dim);
+      font-size: 0.75rem;
+    }
+    
+    .upload-input {
+      display: none;
+    }
+    
+    .watermark-workspace {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    @media (max-width: 900px) {
+      .watermark-workspace {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .canvas-container {
+      background: var(--color-bg-panel);
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+    }
+    
+    #watermarkCanvas {
+      max-width: 100%;
+      max-height: 500px;
+      box-shadow: var(--shadow-pixel);
+    }
+    
+    .settings-panel {
+      background: var(--color-bg-panel);
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-lg);
+    }
+    
+    .setting-section {
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .setting-section:last-child {
+      margin-bottom: 0;
+    }
+    
+    .section-title {
+      font-size: 0.875rem;
+      color: var(--color-text);
+      margin-bottom: var(--spacing-md);
+      padding-bottom: var(--spacing-sm);
+      border-bottom: 1px solid var(--color-card-border);
+    }
+    
+    .setting-item {
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .setting-label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--color-text-dim);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .text-input {
+      width: 100%;
+      padding: var(--spacing-sm);
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-sm);
+      color: var(--color-text);
+      font-size: 0.875rem;
+      outline: none;
+    }
+    
+    .text-input:focus {
+      border-color: var(--color-accent);
+    }
+    
+    .color-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    
+    .color-input {
+      width: 50px;
+      height: 36px;
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      background: none;
+    }
+    
+    .color-value {
+      font-size: 0.875rem;
+      color: var(--color-text);
+      font-family: monospace;
+    }
+    
+    .slider-container {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    
+    .slider {
+      flex: 1;
+      height: 6px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: var(--color-bg-dark);
+      border-radius: 3px;
+      outline: none;
+    }
+    
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    
+    .slider::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      background: var(--color-accent);
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+    }
+    
+    .slider-value {
+      font-size: 0.875rem;
+      color: var(--color-text);
+      min-width: 40px;
+      text-align: right;
+    }
+    
+    .position-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-xs);
+    }
+    
+    .position-btn {
+      aspect-ratio: 1;
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.75rem;
+      color: var(--color-text-dim);
+    }
+    
+    .position-btn:hover {
+      border-color: var(--color-accent);
+    }
+    
+    .position-btn.active {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: white;
+    }
+    
+    .tool-actions {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+    }
+    
+    .action-btn {
+      background: var(--color-accent);
+      color: white;
+      border: none;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+    
+    .action-btn:hover {
+      background: var(--color-accent-hover);
+      transform: translateY(-2px);
+    }
+    
+    .action-btn:disabled {
+      background: var(--color-card-border);
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .action-btn.secondary {
+      background: var(--color-bg-panel);
+      border: 2px solid var(--color-card-border);
+      color: var(--color-text);
+    }
+    
+    .action-btn.secondary:hover {
+      background: var(--color-card-border);
+    }
+    
+    .canvas-placeholder {
+      color: var(--color-text-dim);
+      font-size: 0.875rem;
+      text-align: center;
+    }
+
+    .select-input {
+      width: 100%;
+      padding: var(--spacing-sm);
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-sm);
+      color: var(--color-text);
+      font-size: 0.875rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .select-input:focus {
+      border-color: var(--color-accent);
+    }
+
+    .select-input option {
+      background: var(--color-bg-dark);
+      color: var(--color-text);
+    }
+
+    .style-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-xs);
+    }
+
+    .style-btn {
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      font-size: 0.75rem;
+      color: var(--color-text-dim);
+      text-align: center;
+    }
+
+    .style-btn:hover {
+      border-color: var(--color-accent);
+      color: var(--color-text);
+    }
+
+    .style-btn.active {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: white;
+    }
+
+    .border-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--spacing-xs);
+    }
+
+    .border-btn {
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+      padding: var(--spacing-xs) var(--spacing-sm);
+      font-size: 0.75rem;
+      color: var(--color-text-dim);
+      text-align: center;
+    }
+
+    .border-btn:hover {
+      border-color: var(--color-accent);
+      color: var(--color-text);
+    }
+
+    .border-btn.active {
+      background: var(--color-accent);
+      border-color: var(--color-accent);
+      color: white;
+    }
+
+    .switch-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .switch-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--color-bg-dark);
+      border: 2px solid var(--color-card-border);
+      transition: .3s;
+      border-radius: 24px;
+    }
+
+    .switch-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: var(--color-text-dim);
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    .switch input:checked + .switch-slider {
+      background-color: var(--color-accent);
+      border-color: var(--color-accent);
+    }
+
+    .switch input:checked + .switch-slider:before {
+      transform: translateX(20px);
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="avatar-container" id="avatarContainer">
+          <img src="images/avatar.png" alt="头像" class="avatar" id="avatarImg" onerror="this.style.display='none'">
+        </div>
+        <nav class="nav-menu">
+          <a href="index.html" class="nav-item">📝 文章</a>
+          <a href="aigc.html" class="nav-item">🎨 AIGC</a>
+          <a href="aivideo.html" class="nav-item">📹 AIVideo</a>
+          <a href="bookmarks.html" class="nav-item">🔖 书签</a>
+          <a href="tools.html" class="nav-item active">🛠️ 工具箱</a>
+        </nav>
+        <h1 class="site-title">工具箱</h1>
+        <p class="site-subtitle">图片水印</p>
+      </div>
+
+      <div class="about-section">
+        <h3 class="sidebar-title">关于</h3>
+        <p class="about-text">为图片添加文字或图片水印</p>
+      </div>
+
+      <footer class="sidebar-footer">
+        <p>&copy; 2026 我的个人博客</p>
+      </footer>
+    </aside>
+
+    <main class="main-content">
+      <header class="content-header">
+        <h2 class="content-title">💧 图片水印</h2>
+        <a href="tools.html" class="back-link">← 返回工具箱</a>
+      </header>
+
+      <div class="tool-container">
+        <div class="tool-header">
+          <h2 class="tool-title">💧 图片水印</h2>
+          <p class="tool-subtitle">为图片添加文字或图片水印，支持自定义位置和透明度</p>
+        </div>
+
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">📁</div>
+          <div class="upload-text">点击或拖拽图片到此处</div>
+          <div class="upload-hint">支持 PNG、JPG、WebP 格式</div>
+          <input type="file" class="upload-input" id="fileInput" accept="image/*">
+        </div>
+
+        <div class="watermark-workspace" id="workspace" style="display: none;">
+          <div class="canvas-container">
+            <canvas id="watermarkCanvas"></canvas>
+          </div>
+
+          <div class="settings-panel">
+            <div class="setting-section">
+              <div class="section-title">文字水印</div>
+              <div class="setting-item">
+                <label class="setting-label">水印文字</label>
+                <input type="text" class="text-input" id="watermarkText" placeholder="输入水印文字" value="Sample Watermark">
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">字体大小</label>
+                <div class="slider-container">
+                  <input type="range" class="slider" id="fontSize" min="12" max="120" value="48">
+                  <span class="slider-value" id="fontSizeValue">48px</span>
+                </div>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">文字颜色</label>
+                <div class="color-input-wrapper">
+                  <input type="color" class="color-input" id="textColor" value="#ffffff">
+                  <span class="color-value" id="textColorValue">#ffffff</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-section">
+              <div class="section-title">字体设置</div>
+              <div class="setting-item">
+                <label class="setting-label">选择字体</label>
+                <select class="select-input" id="fontFamily">
+                  <option value="Arial, sans-serif">Arial</option>
+                  <option value="'Microsoft YaHei', sans-serif">微软雅黑</option>
+                  <option value="'SimHei', sans-serif">黑体</option>
+                  <option value="'SimSun', serif">宋体</option>
+                  <option value="'KaiTi', serif">楷体</option>
+                  <option value="'FangSong', serif">仿宋</option>
+                  <option value="Georgia, serif">Georgia</option>
+                  <option value="'Times New Roman', serif">Times New Roman</option>
+                  <option value="Verdana, sans-serif">Verdana</option>
+                  <option value="'Courier New', monospace">Courier New</option>
+                </select>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">文字样式</label>
+                <div class="style-grid">
+                  <button class="style-btn active" data-style="normal">正常</button>
+                  <button class="style-btn" data-style="bold">粗体</button>
+                  <button class="style-btn" data-style="italic">斜体</button>
+                  <button class="style-btn" data-style="bold-italic">粗斜体</button>
+                  <button class="style-btn" data-style="shadow">阴影</button>
+                  <button class="style-btn" data-style="stroke">描边</button>
+                  <button class="style-btn" data-style="shadow-stroke">阴影+描边</button>
+                  <button class="style-btn" data-style="underline">下划线</button>
+                  <button class="style-btn" data-style="double-line">双线</button>
+                  <button class="style-btn" data-style="hollow">空心字</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-section">
+              <div class="section-title">边框样式</div>
+              <div class="setting-item">
+                <label class="setting-label">选择边框</label>
+                <div class="border-grid">
+                  <button class="border-btn active" data-border="none">无边框</button>
+                  <button class="border-btn" data-border="solid">实线边框</button>
+                  <button class="border-btn" data-border="dashed">虚线边框</button>
+                  <button class="border-btn" data-border="double">双线边框</button>
+                  <button class="border-btn" data-border="rounded-bg">圆角背景</button>
+                  <button class="border-btn" data-border="glow">外发光</button>
+                  <button class="border-btn" data-border="inner-shadow">内阴影</button>
+                  <button class="border-btn" data-border="neon">霓虹效果</button>
+                </div>
+              </div>
+              <div class="setting-item" id="borderColorItem">
+                <label class="setting-label">边框颜色</label>
+                <div class="color-input-wrapper">
+                  <input type="color" class="color-input" id="borderColor" value="#000000">
+                  <span class="color-value" id="borderColorValue">#000000</span>
+                </div>
+              </div>
+              <div class="setting-item" id="borderWidthItem">
+                <label class="setting-label">边框粗细</label>
+                <div class="slider-container">
+                  <input type="range" class="slider" id="borderWidth" min="1" max="20" value="4">
+                  <span class="slider-value" id="borderWidthValue">4px</span>
+                </div>
+              </div>
+              <div class="setting-item">
+                <div class="switch-container">
+                  <label class="setting-label" style="margin-bottom:0">背景填充</label>
+                  <label class="switch">
+                    <input type="checkbox" id="bgFill">
+                    <span class="switch-slider"></span>
+                  </label>
+                </div>
+              </div>
+              <div class="setting-item" id="bgColorItem" style="display:none">
+                <label class="setting-label">背景颜色</label>
+                <div class="color-input-wrapper">
+                  <input type="color" class="color-input" id="bgColor" value="#000000">
+                  <span class="color-value" id="bgColorValue">#000000</span>
+                </div>
+              </div>
+              <div class="setting-item" id="bgOpacityItem" style="display:none">
+                <label class="setting-label">背景透明度</label>
+                <div class="slider-container">
+                  <input type="range" class="slider" id="bgOpacity" min="0" max="100" value="50">
+                  <span class="slider-value" id="bgOpacityValue">50%</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-section">
+              <div class="section-title">样式设置</div>
+              <div class="setting-item">
+                <label class="setting-label">水印数量</label>
+                <div class="slider-container">
+                  <input type="range" class="slider" id="watermarkCount" min="1" max="200" value="1">
+                  <span class="slider-value" id="watermarkCountValue">1</span>
+                </div>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">水印间距</label>
+                <div class="slider-container">
+                  <input type="range" class="slider" id="watermarkSpacing" min="-100" max="500" value="100">
+                  <span class="slider-value" id="watermarkSpacingValue">100%</span>
+                </div>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">透明度</label>
+                <div class="slider-container">
+                  <input type="range" class="slider" id="opacity" min="0" max="100" value="50">
+                  <span class="slider-value" id="opacityValue">50%</span>
+                </div>
+              </div>
+              <div class="setting-item">
+                <label class="setting-label">旋转角度</label>
+                <div class="slider-container">
+                  <input type="range" class="slider" id="rotation" min="-180" max="180" value="-30">
+                  <span class="slider-value" id="rotationValue">-30°</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="setting-section">
+              <div class="section-title">位置</div>
+              <div class="position-grid">
+                <button class="position-btn" data-pos="top-left">↖</button>
+                <button class="position-btn" data-pos="top-center">↑</button>
+                <button class="position-btn" data-pos="top-right">↗</button>
+                <button class="position-btn" data-pos="center-left">←</button>
+                <button class="position-btn active" data-pos="center">•</button>
+                <button class="position-btn" data-pos="center-right">→</button>
+                <button class="position-btn" data-pos="bottom-left">↙</button>
+                <button class="position-btn" data-pos="bottom-center">↓</button>
+                <button class="position-btn" data-pos="bottom-right">↘</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-actions">
+          <button class="action-btn" id="downloadBtn" disabled onclick="downloadImage()">
+            💾 下载图片
+          </button>
+          <button class="action-btn secondary" onclick="resetWatermark()">
+            🔄 重新选择
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const workspace = document.getElementById('workspace');
+    const canvas = document.getElementById('watermarkCanvas');
+    const ctx = canvas.getContext('2d');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    // 设置输入
+    const watermarkText = document.getElementById('watermarkText');
+    const fontSize = document.getElementById('fontSize');
+    const fontSizeValue = document.getElementById('fontSizeValue');
+    const textColor = document.getElementById('textColor');
+    const textColorValue = document.getElementById('textColorValue');
+    const watermarkCount = document.getElementById('watermarkCount');
+    const watermarkCountValue = document.getElementById('watermarkCountValue');
+    const watermarkSpacing = document.getElementById('watermarkSpacing');
+    const watermarkSpacingValue = document.getElementById('watermarkSpacingValue');
+    const opacity = document.getElementById('opacity');
+    const opacityValue = document.getElementById('opacityValue');
+    const rotation = document.getElementById('rotation');
+    const rotationValue = document.getElementById('rotationValue');
+    const positionBtns = document.querySelectorAll('.position-btn');
+    const fontFamily = document.getElementById('fontFamily');
+    const styleBtns = document.querySelectorAll('.style-btn');
+    const borderBtns = document.querySelectorAll('.border-btn');
+    const borderColor = document.getElementById('borderColor');
+    const borderColorValue = document.getElementById('borderColorValue');
+    const borderWidth = document.getElementById('borderWidth');
+    const borderWidthValue = document.getElementById('borderWidthValue');
+    const bgFill = document.getElementById('bgFill');
+    const bgColor = document.getElementById('bgColor');
+    const bgColorValue = document.getElementById('bgColorValue');
+    const bgOpacity = document.getElementById('bgOpacity');
+    const bgOpacityValue = document.getElementById('bgOpacityValue');
+    const bgColorItem = document.getElementById('bgColorItem');
+    const bgOpacityItem = document.getElementById('bgOpacityItem');
+
+    let originalImage = null;
+    let currentPosition = 'center';
+    let currentStyle = 'normal';
+    let currentBorder = 'none';
+
+    // 位置选择
+    positionBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        positionBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentPosition = btn.dataset.pos;
+        if (originalImage) drawWatermark();
+      });
+    });
+
+    // 字体选择
+    fontFamily.addEventListener('change', () => {
+      if (originalImage) drawWatermark();
+    });
+
+    // 文字样式选择
+    styleBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        styleBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentStyle = btn.dataset.style;
+        if (originalImage) drawWatermark();
+      });
+    });
+
+    // 边框样式选择
+    borderBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        borderBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentBorder = btn.dataset.border;
+        if (originalImage) drawWatermark();
+      });
+    });
+
+    // 边框颜色
+    borderColor.addEventListener('input', (e) => {
+      borderColorValue.textContent = e.target.value;
+      if (originalImage) drawWatermark();
+    });
+
+    // 边框粗细
+    borderWidth.addEventListener('input', (e) => {
+      borderWidthValue.textContent = e.target.value + 'px';
+      if (originalImage) drawWatermark();
+    });
+
+    // 背景填充开关
+    bgFill.addEventListener('change', () => {
+      bgColorItem.style.display = bgFill.checked ? 'block' : 'none';
+      bgOpacityItem.style.display = bgFill.checked ? 'block' : 'none';
+      if (originalImage) drawWatermark();
+    });
+
+    // 背景颜色
+    bgColor.addEventListener('input', (e) => {
+      bgColorValue.textContent = e.target.value;
+      if (originalImage) drawWatermark();
+    });
+
+    // 背景透明度
+    bgOpacity.addEventListener('input', (e) => {
+      bgOpacityValue.textContent = e.target.value + '%';
+      if (originalImage) drawWatermark();
+    });
+
+    // 滑块事件
+    fontSize.addEventListener('input', (e) => {
+      fontSizeValue.textContent = e.target.value + 'px';
+      if (originalImage) drawWatermark();
+    });
+
+    watermarkCount.addEventListener('input', (e) => {
+      watermarkCountValue.textContent = e.target.value;
+      if (originalImage) drawWatermark();
+    });
+
+    watermarkSpacing.addEventListener('input', (e) => {
+      watermarkSpacingValue.textContent = e.target.value + '%';
+      if (originalImage) drawWatermark();
+    });
+
+    opacity.addEventListener('input', (e) => {
+      opacityValue.textContent = e.target.value + '%';
+      if (originalImage) drawWatermark();
+    });
+
+    rotation.addEventListener('input', (e) => {
+      rotationValue.textContent = e.target.value + '°';
+      if (originalImage) drawWatermark();
+    });
+
+    // 颜色输入
+    textColor.addEventListener('input', (e) => {
+      textColorValue.textContent = e.target.value;
+      if (originalImage) drawWatermark();
+    });
+
+    // 文字输入
+    watermarkText.addEventListener('input', () => {
+      if (originalImage) drawWatermark();
+    });
+
+    // 点击上传
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    // 文件选择
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) handleFile(file);
+    });
+
+    // 拖拽上传
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        handleFile(file);
+      }
+    });
+
+    // 绘制圆角矩形辅助函数
+    function roundRect(ctx, x, y, w, h, r) {
+      if (w < 2 * r) r = w / 2;
+      if (h < 2 * r) r = h / 2;
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+
+    // 处理文件
+    function handleFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        originalImage = new Image();
+        originalImage.onload = () => {
+          canvas.width = originalImage.width;
+          canvas.height = originalImage.height;
+          drawWatermark();
+          
+          uploadArea.style.display = 'none';
+          workspace.style.display = 'grid';
+          downloadBtn.disabled = false;
+        };
+        originalImage.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // 绘制水印
+    function drawWatermark() {
+      if (!originalImage) return;
+
+      // 清除画布
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // 绘制原图
+      ctx.drawImage(originalImage, 0, 0);
+
+      // 设置文字样式
+      const text = watermarkText.value || 'Watermark';
+      const size = parseInt(fontSize.value);
+      const color = textColor.value;
+      const alpha = parseInt(opacity.value) / 100;
+      const rotate = parseInt(rotation.value);
+      const count = parseInt(watermarkCount.value);
+
+      ctx.save();
+      
+      // 设置字体
+      const family = fontFamily.value;
+      let fontWeight = 'normal';
+      let fontStyle = 'normal';
+      
+      if (currentStyle === 'bold' || currentStyle === 'bold-italic' || currentStyle === 'shadow-stroke' || currentStyle === 'stroke' || currentStyle === 'hollow') {
+        fontWeight = 'bold';
+      }
+      if (currentStyle === 'italic' || currentStyle === 'bold-italic') {
+        fontStyle = 'italic';
+      }
+      
+      ctx.font = `${fontStyle !== 'normal' ? fontStyle + ' ' : ''}${fontWeight !== 'normal' ? fontWeight + ' ' : ''}${size}px ${family}`;
+      ctx.fillStyle = color;
+      ctx.globalAlpha = alpha;
+      
+      // 计算文字尺寸
+      const textMetrics = ctx.measureText(text);
+      const textWidth = textMetrics.width;
+      const textHeight = size;
+      
+      // 根据数量计算交错布局
+      const spacingPercent = parseInt(watermarkSpacing.value) / 100; // 间距百分比
+      const userSpacing = Math.max(textWidth, textHeight) * spacingPercent; // 用户设置的间距
+      
+      // 根据图片尺寸和水印数量计算最小需要的间距，确保能放下所有水印
+      const cols = Math.ceil(Math.sqrt(count * (canvas.width / canvas.height)));
+      const rows = Math.ceil(count / cols);
+      
+      // 计算最小需要的间距（确保所有水印能放下）
+      const minSpacingX = canvas.width / Math.max(cols, 1);
+      const minSpacingY = canvas.height / Math.max(rows, 1);
+      const minSpacing = Math.min(minSpacingX, minSpacingY) * 0.9;
+      
+      // 最终间距：负值间距直接使用用户设置，正值时取用户设置和最小需要的较大值
+      const spacing = spacingPercent < 0 ? userSpacing : Math.max(userSpacing, minSpacing);
+      const staggerOffset = count > 1 ? spacing * 0.5 : 0; // 只有多个水印时才交错
+      
+      // 计算起始偏移，用于位置模式
+      let offsetX = 0;
+      let offsetY = 0;
+      
+      // 边距（至少20px，或根据间距计算）
+      const margin = Math.max(20, spacing * 0.15);
+      
+      if (count === 1) {
+        // 单水印：使用简单居中/靠边逻辑
+        switch (currentPosition) {
+          case 'top-left':
+            offsetX = margin;
+            offsetY = margin + textHeight;
+            break;
+          case 'top-center':
+            offsetX = (canvas.width - textWidth) / 2;
+            offsetY = margin + textHeight;
+            break;
+          case 'top-right':
+            offsetX = canvas.width - textWidth - margin;
+            offsetY = margin + textHeight;
+            break;
+          case 'center-left':
+            offsetX = margin;
+            offsetY = canvas.height / 2 + textHeight / 2;
+            break;
+          case 'center':
+            offsetX = (canvas.width - textWidth) / 2;
+            offsetY = canvas.height / 2 + textHeight / 2;
+            break;
+          case 'center-right':
+            offsetX = canvas.width - textWidth - margin;
+            offsetY = canvas.height / 2 + textHeight / 2;
+            break;
+          case 'bottom-left':
+            offsetX = margin;
+            offsetY = canvas.height - margin;
+            break;
+          case 'bottom-center':
+            offsetX = (canvas.width - textWidth) / 2;
+            offsetY = canvas.height - margin;
+            break;
+          case 'bottom-right':
+            offsetX = canvas.width - textWidth - margin;
+            offsetY = canvas.height - margin;
+            break;
+        }
+      } else {
+        // 多水印：计算整个水印区域的位置
+        const totalWidth = (cols - 1) * spacing + staggerOffset + textWidth;
+        const totalHeight = (rows - 1) * spacing + textHeight;
+        
+        switch (currentPosition) {
+          case 'top-left':
+            offsetX = margin;
+            offsetY = margin + textHeight;
+            break;
+          case 'top-center':
+            offsetX = (canvas.width - totalWidth) / 2 + textWidth / 2;
+            offsetY = margin + textHeight;
+            break;
+          case 'top-right':
+            offsetX = canvas.width - totalWidth - margin + textWidth / 2;
+            offsetY = margin + textHeight;
+            break;
+          case 'center-left':
+            offsetX = margin;
+            offsetY = (canvas.height - totalHeight) / 2 + textHeight;
+            break;
+          case 'center':
+            offsetX = (canvas.width - totalWidth) / 2 + textWidth / 2;
+            offsetY = (canvas.height - totalHeight) / 2 + textHeight;
+            break;
+          case 'center-right':
+            offsetX = canvas.width - totalWidth - margin + textWidth / 2;
+            offsetY = (canvas.height - totalHeight) / 2 + textHeight;
+            break;
+          case 'bottom-left':
+            offsetX = margin;
+            offsetY = canvas.height - totalHeight - margin + textHeight;
+            break;
+          case 'bottom-center':
+            offsetX = (canvas.width - totalWidth) / 2 + textWidth / 2;
+            offsetY = canvas.height - totalHeight - margin + textHeight;
+            break;
+          case 'bottom-right':
+            offsetX = canvas.width - totalWidth - margin + textWidth / 2;
+            offsetY = canvas.height - totalHeight - margin + textHeight;
+            break;
+        }
+      }
+      
+      let watermarkIndex = 0;
+      
+      for (let row = 0; row < rows && watermarkIndex < count; row++) {
+        // 交错布局：偶数行从0开始，奇数行偏移
+        const isEvenRow = row % 2 === 0;
+        const rowOffsetX = isEvenRow ? 0 : staggerOffset;
+        
+        for (let col = 0; col < cols && watermarkIndex < count; col++) {
+          // 计算当前水印位置
+          let x = offsetX + rowOffsetX + col * spacing;
+          let y = offsetY + row * spacing;
+
+          // 应用旋转
+          ctx.save();
+          ctx.translate(x + textWidth / 2, y - textHeight / 2);
+          ctx.rotate(rotate * Math.PI / 180);
+          ctx.translate(-(x + textWidth / 2), -(y - textHeight / 2));
+          
+          // 边框与背景配置
+          const border = currentBorder;
+          const bWidth = parseInt(borderWidth.value);
+          const bColor = borderColor.value;
+          const padding = size * 0.3;
+          const boxX = x - padding;
+          const boxY = y - textHeight - padding;
+          const boxW = textWidth + padding * 2;
+          const boxH = textHeight + padding * 2;
+          
+          // 绘制背景填充
+          if (bgFill.checked) {
+            const bgR = parseInt(bgColor.value.slice(1, 3), 16);
+            const bgG = parseInt(bgColor.value.slice(3, 5), 16);
+            const bgB = parseInt(bgColor.value.slice(5, 7), 16);
+            const bgA = parseInt(bgOpacity.value) / 100;
+            ctx.save();
+            ctx.fillStyle = `rgba(${bgR}, ${bgG}, ${bgB}, ${bgA})`;
+            if (border === 'rounded-bg' || border === 'glow' || border === 'neon') {
+              roundRect(ctx, boxX, boxY, boxW, boxH, size * 0.2);
+              ctx.fill();
+            } else {
+              ctx.fillRect(boxX, boxY, boxW, boxH);
+            }
+            ctx.restore();
+          }
+          
+          // 绘制边框
+          if (border !== 'none') {
+            ctx.save();
+            ctx.strokeStyle = bColor;
+            ctx.lineWidth = bWidth;
+            
+            switch (border) {
+              case 'solid':
+                ctx.strokeRect(boxX, boxY, boxW, boxH);
+                break;
+              case 'dashed':
+                ctx.setLineDash([bWidth * 3, bWidth * 2]);
+                ctx.strokeRect(boxX, boxY, boxW, boxH);
+                ctx.setLineDash([]);
+                break;
+              case 'double':
+                ctx.strokeRect(boxX, boxY, boxW, boxH);
+                ctx.strokeRect(boxX + bWidth * 1.5, boxY + bWidth * 1.5, boxW - bWidth * 3, boxH - bWidth * 3);
+                break;
+              case 'rounded-bg':
+                roundRect(ctx, boxX, boxY, boxW, boxH, size * 0.2);
+                ctx.stroke();
+                break;
+              case 'glow':
+                ctx.shadowColor = bColor;
+                ctx.shadowBlur = bWidth * 3;
+                roundRect(ctx, boxX, boxY, boxW, boxH, size * 0.2);
+                ctx.stroke();
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                break;
+              case 'inner-shadow':
+                roundRect(ctx, boxX, boxY, boxW, boxH, size * 0.1);
+                ctx.stroke();
+                ctx.save();
+                roundRect(ctx, boxX, boxY, boxW, boxH, size * 0.1);
+                ctx.clip();
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = bWidth * 2;
+                ctx.shadowOffsetX = bWidth * 0.5;
+                ctx.shadowOffsetY = bWidth * 0.5;
+                ctx.strokeStyle = 'rgba(0,0,0,0.3)';
+                ctx.lineWidth = bWidth;
+                ctx.strokeRect(boxX - bWidth, boxY - bWidth, boxW + bWidth * 2, boxH + bWidth * 2);
+                ctx.restore();
+                break;
+              case 'neon':
+                ctx.shadowColor = bColor;
+                ctx.shadowBlur = bWidth * 4;
+                roundRect(ctx, boxX, boxY, boxW, boxH, size * 0.2);
+                ctx.stroke();
+                ctx.shadowBlur = bWidth * 2;
+                ctx.lineWidth = Math.max(1, bWidth * 0.5);
+                roundRect(ctx, boxX, boxY, boxW, boxH, size * 0.2);
+                ctx.stroke();
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                break;
+            }
+            ctx.restore();
+          }
+          
+          // 绘制文字（根据样式应用不同效果）
+          const style = currentStyle;
+          const lineWidth = Math.max(1, size * 0.05);
+          
+          // 阴影效果
+          if (style === 'shadow' || style === 'shadow-stroke') {
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+            ctx.shadowBlur = size * 0.3;
+            ctx.shadowOffsetX = size * 0.05;
+            ctx.shadowOffsetY = size * 0.05;
+          }
+          
+          if (style === 'hollow') {
+            // 空心字：只描边不填充
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth * 1.5;
+            ctx.strokeText(text, x, y);
+          } else if (style === 'stroke' || style === 'shadow-stroke') {
+            // 描边或阴影描边：先填充再描边
+            ctx.fillText(text, x, y);
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.strokeText(text, x, y);
+          } else {
+            ctx.fillText(text, x, y);
+          }
+          
+          // 下划线/双线
+          if (style === 'underline' || style === 'double-line') {
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth * 0.8;
+            ctx.beginPath();
+            const lineY = y + size * 0.1;
+            ctx.moveTo(x, lineY);
+            ctx.lineTo(x + textWidth, lineY);
+            ctx.stroke();
+            
+            if (style === 'double-line') {
+              ctx.beginPath();
+              const lineY2 = lineY + size * 0.15;
+              ctx.moveTo(x, lineY2);
+              ctx.lineTo(x + textWidth, lineY2);
+              ctx.stroke();
+            }
+          }
+          
+          ctx.restore();
+          
+          watermarkIndex++;
+        }
+      }
+      
+      ctx.restore();
+    }
+
+    // 下载图片
+    function downloadImage() {
+      const link = document.createElement('a');
+      link.download = 'watermarked_image.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // 重置
+    function resetWatermark() {
+      originalImage = null;
+      fileInput.value = '';
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      uploadArea.style.display = 'block';
+      workspace.style.display = 'none';
+      downloadBtn.disabled = true;
+    }
+  </script>
+</body>
+</html>

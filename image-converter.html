@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片格式转换 - 工具箱</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <style>
+    .tool-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: var(--spacing-lg);
+    }
+    
+    .tool-header {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .tool-title {
+      font-size: 1.5rem;
+      color: var(--color-accent);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .tool-subtitle {
+      color: var(--color-text-dim);
+      font-size: 0.875rem;
+    }
+    
+    .upload-area {
+      border: 3px dashed var(--color-card-border);
+      border-radius: var(--radius-lg);
+      padding: var(--spacing-xl);
+      text-align: center;
+      background: var(--color-bg-panel);
+      transition: all 0.3s;
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .upload-area:hover,
+    .upload-area.dragover {
+      border-color: var(--color-accent);
+      background: rgba(255, 105, 180, 0.05);
+    }
+    
+    .upload-icon {
+      font-size: 3rem;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .upload-text {
+      color: var(--color-text);
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .upload-hint {
+      color: var(--color-text-dim);
+      font-size: 0.75rem;
+    }
+    
+    .upload-input {
+      display: none;
+    }
+    
+    .converter-settings {
+      background: var(--color-bg-panel);
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    .setting-title {
+      font-size: 0.875rem;
+      color: var(--color-text);
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .format-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--spacing-md);
+      margin-bottom: var(--spacing-lg);
+    }
+    
+    @media (max-width: 600px) {
+      .format-options {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .format-option {
+      background: var(--color-bg-dark);
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-md);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    
+    .format-option:hover {
+      border-color: var(--color-accent);
+    }
+    
+    .format-option.active {
+      border-color: var(--color-accent);
+      background: rgba(255, 105, 180, 0.1);
+    }
+    
+    .format-icon {
+      font-size: 2rem;
+      margin-bottom: var(--spacing-sm);
+    }
+    
+    .format-name {
+      font-size: 1rem;
+      color: var(--color-text);
+      margin-bottom: var(--spacing-xs);
+    }
+    
+    .format-desc {
+      font-size: 0.75rem;
+      color: var(--color-text-dim);
+    }
+    
+    .image-preview-panel {
+      background: var(--color-bg-panel);
+      border: 2px solid var(--color-card-border);
+      border-radius: var(--radius-md);
+      padding: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+      display: none;
+    }
+    
+    .image-preview-panel.show {
+      display: block;
+    }
+    
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--spacing-md);
+    }
+    
+    .preview-title {
+      font-size: 0.875rem;
+      color: var(--color-text);
+    }
+    
+    .file-info {
+      font-size: 0.75rem;
+      color: var(--color-text-dim);
+    }
+    
+    .image-preview {
+      width: 100%;
+      max-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-bg-dark);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    
+    .image-preview img {
+      max-width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+    }
+    
+    .tool-actions {
+      display: flex;
+      justify-content: center;
+      gap: var(--spacing-md);
+      flex-wrap: wrap;
+    }
+    
+    .action-btn {
+      background: var(--color-accent);
+      color: white;
+      border: none;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-xs);
+    }
+    
+    .action-btn:hover {
+      background: var(--color-accent-hover);
+      transform: translateY(-2px);
+    }
+    
+    .action-btn:disabled {
+      background: var(--color-card-border);
+      cursor: not-allowed;
+      transform: none;
+    }
+    
+    .action-btn.secondary {
+      background: var(--color-bg-panel);
+      border: 2px solid var(--color-card-border);
+      color: var(--color-text);
+    }
+    
+    .action-btn.secondary:hover {
+      background: var(--color-card-border);
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="avatar-container" id="avatarContainer">
+          <img src="images/avatar.png" alt="头像" class="avatar" id="avatarImg" onerror="this.style.display='none'">
+        </div>
+        <nav class="nav-menu">
+          <a href="index.html" class="nav-item">📝 文章</a>
+          <a href="aigc.html" class="nav-item">🎨 AIGC</a>
+          <a href="aivideo.html" class="nav-item">📹 AIVideo</a>
+          <a href="bookmarks.html" class="nav-item">🔖 书签</a>
+          <a href="tools.html" class="nav-item active">🛠️ 工具箱</a>
+        </nav>
+        <h1 class="site-title">工具箱</h1>
+        <p class="site-subtitle">图片格式转换</p>
+      </div>
+
+      <div class="about-section">
+        <h3 class="sidebar-title">关于</h3>
+        <p class="about-text">PNG、JPG、WebP 格式互转</p>
+      </div>
+
+      <footer class="sidebar-footer">
+        <p>&copy; 2026 我的个人博客</p>
+      </footer>
+    </aside>
+
+    <main class="main-content">
+      <header class="content-header">
+        <h2 class="content-title">🔄 图片格式转换</h2>
+        <a href="tools.html" class="back-link">← 返回工具箱</a>
+      </header>
+
+      <div class="tool-container">
+        <div class="tool-header">
+          <h2 class="tool-title">🔄 图片格式转换</h2>
+          <p class="tool-subtitle">PNG、JPG、WebP 格式互转，支持批量转换</p>
+        </div>
+
+        <div class="upload-area" id="uploadArea">
+          <div class="upload-icon">📁</div>
+          <div class="upload-text">点击或拖拽图片到此处</div>
+          <div class="upload-hint">支持 PNG、JPG、WebP 格式</div>
+          <input type="file" class="upload-input" id="fileInput" accept="image/*">
+        </div>
+
+        <div class="converter-settings">
+          <div class="setting-title">选择输出格式</div>
+          <div class="format-options">
+            <div class="format-option" data-format="image/png">
+              <div class="format-icon">🖼️</div>
+              <div class="format-name">PNG</div>
+              <div class="format-desc">无损压缩，支持透明</div>
+            </div>
+            <div class="format-option active" data-format="image/jpeg">
+              <div class="format-icon">📷</div>
+              <div class="format-name">JPG</div>
+              <div class="format-desc">有损压缩，体积小巧</div>
+            </div>
+            <div class="format-option" data-format="image/webp">
+              <div class="format-icon">⚡</div>
+              <div class="format-name">WebP</div>
+              <div class="format-desc">现代格式，压缩率高</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="image-preview-panel" id="previewPanel">
+          <div class="preview-header">
+            <span class="preview-title">图片预览</span>
+            <span class="file-info" id="fileInfo">-</span>
+          </div>
+          <div class="image-preview">
+            <img id="previewImage" alt="预览">
+          </div>
+        </div>
+
+        <div class="tool-actions">
+          <button class="action-btn" id="convertBtn" disabled onclick="convertImage()">
+            🔄 开始转换
+          </button>
+          <button class="action-btn secondary" onclick="resetConverter()">
+            🔄 重新选择
+          </button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/app.js"></script>
+  <script>
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    const previewPanel = document.getElementById('previewPanel');
+    const previewImage = document.getElementById('previewImage');
+    const fileInfo = document.getElementById('fileInfo');
+    const convertBtn = document.getElementById('convertBtn');
+    const formatOptions = document.querySelectorAll('.format-option');
+
+    let currentFile = null;
+    let selectedFormat = 'image/jpeg';
+
+    // 格式选择
+    formatOptions.forEach(option => {
+      option.addEventListener('click', () => {
+        formatOptions.forEach(opt => opt.classList.remove('active'));
+        option.classList.add('active');
+        selectedFormat = option.dataset.format;
+      });
+    });
+
+    // 点击上传
+    uploadArea.addEventListener('click', () => fileInput.click());
+
+    // 文件选择
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) handleFile(file);
+    });
+
+    // 拖拽上传
+    uploadArea.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      uploadArea.classList.add('dragover');
+    });
+
+    uploadArea.addEventListener('dragleave', () => {
+      uploadArea.classList.remove('dragover');
+    });
+
+    uploadArea.addEventListener('drop', (e) => {
+      e.preventDefault();
+      uploadArea.classList.remove('dragover');
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith('image/')) {
+        handleFile(file);
+      }
+    });
+
+    // 处理文件
+    function handleFile(file) {
+      currentFile = file;
+      
+      // 显示文件信息
+      const formatNames = {
+        'image/png': 'PNG',
+        'image/jpeg': 'JPG',
+        'image/webp': 'WebP'
+      };
+      fileInfo.textContent = `${file.name} (${formatNames[file.type] || file.type})`;
+
+      // 读取并显示预览
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImage.src = e.target.result;
+        previewPanel.classList.add('show');
+        convertBtn.disabled = false;
+      };
+      reader.readAsDataURL(file);
+
+      uploadArea.style.display = 'none';
+    }
+
+    // 转换图片
+    function convertImage() {
+      if (!currentFile) return;
+
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        
+        const ctx = canvas.getContext('2d');
+        
+        // 如果是 PNG 转 JPG，填充白色背景
+        if (selectedFormat === 'image/jpeg') {
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        ctx.drawImage(img, 0, 0);
+
+        // 转换格式
+        canvas.toBlob((blob) => {
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          
+          // 设置文件名
+          const originalName = currentFile.name.replace(/\.[^/.]+$/, '');
+          const extensions = {
+            'image/png': 'png',
+            'image/jpeg': 'jpg',
+            'image/webp': 'webp'
+          };
+          link.download = `${originalName}_converted.${extensions[selectedFormat]}`;
+          link.href = url;
+          link.click();
+          
+          URL.revokeObjectURL(url);
+        }, selectedFormat, 0.9);
+      };
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(currentFile);
+    }
+
+    // 重置
+    function resetConverter() {
+      currentFile = null;
+      fileInput.value = '';
+      previewImage.src = '';
+      previewPanel.classList.remove('show');
+      convertBtn.disabled = true;
+      uploadArea.style.display = 'block';
+      fileInfo.textContent = '-';
+    }
+  </script>
+</body>
+</html>
